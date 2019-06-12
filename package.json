@@ -1,0 +1,28 @@
+{
+  "name": "rebuilder-api",
+  "version": "1.0.0",
+  "description": "Backend for Rebuilder",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinKamenov/ReBuilder-API.git"
+  },
+  "keywords": [
+    "NodeJs",
+    "JS",
+    "TypeScript"
+  ],
+  "author": "Martin Kamenov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MartinKamenov/ReBuilder-API/issues"
+  },
+  "homepage": "https://github.com/MartinKamenov/ReBuilder-API#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
