@@ -2,13 +2,14 @@ const { MongoClient } = require('mongodb');
 const ObjectID = require('mongodb').ObjectID;
 
 export default class Database {
-    private connection: Promise;
-
+    
     constructor(private connectionString: String) {
         this.connection = new Promise((resolve) => {
             resolve(MongoClient.connect(this.connectionString));
         });
     }
+
+    private connection: Promise;
 
     insert(collection, record) {
         return new Promise((resolve, reject) => {
