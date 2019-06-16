@@ -1,12 +1,14 @@
 import Route from '../contracts/Route';
 import controller from "./auth-controller";
 import constants from "../../constants/constants";
+import { Application } from 'express';
 
 const { Router } = require('express');
 const passport = require('passport');
 
 class AuthRoute implements Route {
-    attach = (app) => {
+    constructor(private app: Application) {}
+    attach = () => {
         const router = new Router();
     
         router
@@ -37,7 +39,7 @@ class AuthRoute implements Route {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull register');
             });
     
-        app.use('/auth', router);
+        this.app.use('/auth', router);
     }
 };
 

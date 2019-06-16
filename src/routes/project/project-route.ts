@@ -11,8 +11,9 @@ class ProjectRoute implements Route {
         const router = new Router();
     
         router
-            .get('/', (req, res) => {
-
+            .get('/', async (req, res) => {
+                const projects = await controller.getAllProjects(projectRepository);
+                res.send(projects);
             });
     
         app.use('/projects', router);

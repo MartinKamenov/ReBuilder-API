@@ -9,7 +9,7 @@ export default class Database {
         });
     }
 
-    private connection: Promise;
+    private connection: any;
 
     insert(collection, record) {
         return new Promise((resolve, reject) => {

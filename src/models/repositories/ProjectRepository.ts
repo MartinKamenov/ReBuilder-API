@@ -1,23 +1,20 @@
+import Project from "../Project";
 
-export default class UserRepository {
+export default class ProjectRepository {
     constructor(private database: Database, private collectionName: String) {}
-    getAllUsers() {
+    getAllProjects() {
         return this.database.showAll(this.collectionName);
     }
 
-    addUser(user: User) {
+    addProject(user: Project) {
         return this.database.insert(this.collectionName, user);
     }
 
-    findUserByUsername(username: String) {
-        return this.database.find(this.collectionName, {username});
+    findProjectById(id: String) {
+        return this.database.find(this.collectionName, { id });
     }
 
-    findUserByParams(params: Object) {
-        return this.database.find(this.collectionName, params);
-    }
-
-    updateUser(username: User, newUser: User) {
-        return this.database.update(this.collectionName, {username}, newUser);
+    updateProject(id: String, newProject: Project) {
+        return this.database.update(this.collectionName, { id }, newProject);
     }
 };
