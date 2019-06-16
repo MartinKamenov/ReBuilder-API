@@ -2,6 +2,9 @@ import Route from '../contracts/Route';
 import controller from "./auth-controller";
 import constants from "../../constants/constants";
 import { Application } from 'express';
+import RequestInterface from '../../models/server/RequestInterface';
+import ResponseInterface from '../../models/server/ResponseInterface';
+import LogoutRequest from './contracts/LogoutRequest';
 
 const { Router } = require('express');
 const passport = require('passport');
@@ -17,7 +20,7 @@ class AuthRoute implements Route {
                 failureRedirect: '/auth/login/unsuccessfull',
                 failureFlash: true
             }))
-            .post('/logout', (req, res) => {
+            .post('/logout', (req: LogoutRequest, res: ResponseInterface) => {
                 const result = controller.logout(req);
                 res.status(constants.SUCCESS_STATUS_CODE).send(result);
             })
