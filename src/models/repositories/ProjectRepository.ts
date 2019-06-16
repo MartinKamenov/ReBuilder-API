@@ -1,4 +1,5 @@
 import Project from "../Project";
+import Database from "../../database/Database";
 
 export default class ProjectRepository {
     constructor(private database: Database, private collectionName: String) {}
