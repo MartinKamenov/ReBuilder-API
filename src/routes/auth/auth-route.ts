@@ -6,7 +6,7 @@ const { Router } = require('express');
 const passport = require('passport');
 
 class AuthRoute implements Route {
-    attach = (app, userRepository) => {
+    attach = (app) => {
         const router = new Router();
     
         router
