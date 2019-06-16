@@ -29,16 +29,16 @@ class AuthRoute implements Route {
                 failureRedirect: '/auth/register/unsuccessfull',
                 failureFlash: true
             }))
-            .get('/login/successfull', (req, res) => {
+            .get('/login/successfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.SUCCESS_STATUS_CODE).send('Successfull login');
             })
-            .get('/register/successfull', (req, res) => {
+            .get('/register/successfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.SUCCESS_STATUS_CODE).send('Successfull register');
             })
-            .get('/login/unsuccessfull', (req, res) => {
+            .get('/login/unsuccessfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull login');
             })
-            .get('/register/unsuccessfull', (req, res) => {
+            .get('/register/unsuccessfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull register');
             });
     

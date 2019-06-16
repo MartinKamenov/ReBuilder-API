@@ -1,4 +1,4 @@
-export default interface responseInterface {
-    send(message: String): Function;
-    status(statusCode: Number): Function;
+export default interface ResponseInterface {
+    send(message: String|Object|Array<any>): ResponseInterface;
+    status(statusCode: Number): ResponseInterface;
 };
