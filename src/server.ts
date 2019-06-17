@@ -1,11 +1,13 @@
-import SetupConfiguration from "./setup/SetupConfiguration";
-import Route from "./routes/contracts/Route";
-import AuthRoute from "./routes/auth/auth-route";
-import ProjectRoute from "./routes/project/project-route";
+import SetupConfiguration from './setup/SetupConfiguration';
+import Route from './routes/contracts/Route';
+import AuthRoute from './routes/auth/auth-route';
+import ProjectRoute from './routes/project/project-route';
 
 import database from './database/connector';
-import ProjectRepository from "./models/repositories/ProjectRepository";
-import UserRepository from "./models/repositories/UserRepository";
+import ProjectRepository from './models/repositories/ProjectRepository';
+import UserRepository from './models/repositories/UserRepository';
+
+import authConfig from './setup/Auth.config';
 
 const express = require('express');
 const cors = require('cors');
@@ -44,6 +46,8 @@ const start = (setupConfiguration: SetupConfiguration) => {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(bodyParser.json());
+
+    authConfig(app, userRepository);
 
     routes.forEach((route) => {
         route.attach();
