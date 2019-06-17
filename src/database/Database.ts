@@ -9,9 +9,9 @@ export default class Database {
         });
     }
 
-    private connection: Promise;
+    private connection: any;
 
-    insert(collection, record) {
+    insert(collection, record): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -27,7 +27,7 @@ export default class Database {
         });
     }
 
-    update(collection, filter, record) {
+    update(collection, filter, record): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -43,7 +43,7 @@ export default class Database {
         });
     }
 
-    showAll(collection) {
+    showAll(collection): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -58,7 +58,7 @@ export default class Database {
         });
     }
 
-    find(collection, filter) {
+    find(collection, filter): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -73,7 +73,7 @@ export default class Database {
         });
     }
 
-    findOne(collection, filter) {
+    findOne(collection, filter): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -87,7 +87,7 @@ export default class Database {
         });
     }
 
-    findById(collection, id) {
+    findById(collection, id): Promise<Array<any>> {
         const objectId = new ObjectID(id);
         return new Promise((resolve, reject) => {
             this.connection
@@ -103,7 +103,7 @@ export default class Database {
         });
     }
 
-    delete(collection, filter) {
+    delete(collection, filter): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {
@@ -119,7 +119,7 @@ export default class Database {
         });
     }
 
-    deleteAll(collection) {
+    deleteAll(collection): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             this.connection
                 .then((db) => {

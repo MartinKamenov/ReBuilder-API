@@ -4,8 +4,10 @@
   "description": "Backend for Rebuilder",
   "main": "./src/main.ts",
   "scripts": {
-    "start": "npm run build:live",
+    "start": "npm run build:run",
+    "dev": "npm run build:live",
     "build": "tsc -p .",
+    "build:run": "ts-node ./src/main.ts",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec ts-node ./src/main.ts"
   },
   "repository": {
@@ -29,17 +31,24 @@
     "@types/cookie-parser": "^1.4.1",
     "@types/cors": "^2.8.5",
     "@types/express-session": "^1.15.12",
+    "@types/mongodb": "^3.1.28",
     "@types/node": "^12.0.8",
     "@types/passport": "^1.0.0",
+    "@types/passport-local": "^1.0.33",
+    "@types/uuid": "^3.4.4",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "mongodb": "^2.2.30",
     "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "ts-node": "^8.2.0",
-    "typescript": "^3.5.1"
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
