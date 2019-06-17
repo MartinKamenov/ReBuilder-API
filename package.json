@@ -4,8 +4,10 @@
   "description": "Backend for Rebuilder",
   "main": "./src/main.ts",
   "scripts": {
-    "start": "npm run build:live",
+    "start": "npm run build:run",
+    "dev": "npm run build:live",
     "build": "tsc -p .",
+    "build:run": "ts-node ./src/main.ts",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec ts-node ./src/main.ts"
   },
   "repository": {
