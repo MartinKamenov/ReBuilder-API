@@ -1,6 +1,7 @@
 import { Application } from 'express';
 import UserRepository from '../models/repositories/UserRepository';
 import UserModel from '../models/UserModel';
+import User from '../models/contracts/User';
 
 /* eslint max-len: ["error",  { "ignoreRegExpLiterals": true } ]*/
 const passport = require('passport');
@@ -97,7 +98,8 @@ const configAuth: Function = (app: Application, userRepository: UserRepository):
                         message: USERNAME_IS_TAKEN_MESSAGE,
                     });
                 }
-                const newUser = new UserModel(uuid.v1(), email, username, password, imageUrl);
+                
+                const newUser = new UserModel(uuid.v1(), username, password, email, imageUrl, []);
                 return userRepository.addUser(newUser)
                     .then(() => {
                         done(null, newUser);
@@ -116,7 +118,7 @@ const configAuth: Function = (app: Application, userRepository: UserRepository):
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser((user, done) => {
+    passport.serializeUser((user: User, done: Function) => {
         done(null, user.id);
     });
 
