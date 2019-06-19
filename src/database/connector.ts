@@ -1,4 +1,4 @@
-import Database from "./database";
+import Database from "./Database";
 
 const username = process.env.dbUser || 
     require('../../../credentials/credentialManager').rebuilderUsername;
