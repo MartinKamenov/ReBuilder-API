@@ -1,8 +1,7 @@
-const { MongoClient } = require('mongodb');
-const ObjectID = require('mongodb').ObjectID;
+const { MongoClient, ObjectID } = require('mongodb');
 
-export default class Database {
-    
+class Database {
+
     constructor(private connectionString: String) {
         this.connection = new Promise((resolve) => {
             resolve(MongoClient.connect(this.connectionString));
@@ -135,3 +134,5 @@ export default class Database {
         });
     }
 }
+
+export default Database;
