@@ -25,7 +25,7 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     const projectRepository = new ProjectRepository(database, 'projects');
     const userRepository = new UserRepository(database, 'users');
-    
+
     const routes: Array<Route> = [
         new AuthRoute(app),
         new ProjectRoute(app, projectRepository)

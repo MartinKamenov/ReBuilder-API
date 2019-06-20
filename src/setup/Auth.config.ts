@@ -32,11 +32,11 @@ function validateUsername(username) {
     return re.test(username);
 }
 
-const configAuth: Function = (app: Application, userRepository: UserRepository): void => {
+const configAuth: () => void = (app: Application, userRepository: UserRepository): void => {
     passport.use(new Strategy({
         passReqToCallback: true,
     }, (req, username, password, done) => {
-        const email = req.query.email;
+        const email = req.body.email;
         const imageUrl = req.body.imageUrl;
 
         if (!email) {
@@ -46,6 +46,7 @@ const configAuth: Function = (app: Application, userRepository: UserRepository):
                 password
             })
                 .then((users) => {
+                    console.log(users);
                     if (users.length < 1) {
                         return done(null, false, {
                             message: WRONG_USERNAME_OR_PASSWORD_MESSAGE
@@ -61,17 +62,16 @@ const configAuth: Function = (app: Application, userRepository: UserRepository):
                     return done(ex);
                 });
         }
+
         // Register module
-        // const username = req.body.username;
-        // const password = req.body.password;
-        const repeatpassword = req.query.password_confirm;
-        if (!password || !username || !email || !repeatpassword || !imageUrl) {
+        const repeatPassword = req.body.password_confirm;
+        if (!password || !username || !email || !repeatPassword || !imageUrl) {
             return done(null, false, {
                 message: ALL_FIELDS_ARE_REQUIRED_MESSAGE,
             });
         }
 
-        if (password !== repeatpassword) {
+        if (password !== repeatPassword) {
             return done(null, false, {
                 message: PASSWORDS_NOT_SAME_MESSAGE,
             });
@@ -98,7 +98,7 @@ const configAuth: Function = (app: Application, userRepository: UserRepository):
                         message: USERNAME_IS_TAKEN_MESSAGE,
                     });
                 }
-                
+
                 const newUser = new UserModel(uuid.v1(), username, password, email, imageUrl, []);
                 return userRepository.addUser(newUser)
                     .then(() => {
