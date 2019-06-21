@@ -32,7 +32,7 @@ function validateUsername(username) {
     return re.test(username);
 }
 
-const configAuth: () => void = (app: Application, userRepository: UserRepository): void => {
+const configAuth = (app: Application, userRepository: UserRepository) => {
     passport.use(new Strategy({
         passReqToCallback: true,
     }, (req, username, password, done) => {
@@ -45,22 +45,21 @@ const configAuth: () => void = (app: Application, userRepository: UserRepository
                 username,
                 password
             })
-                .then((users) => {
-                    console.log(users);
-                    if (users.length < 1) {
-                        return done(null, false, {
-                            message: WRONG_USERNAME_OR_PASSWORD_MESSAGE
-                        });
-                    } else if (users.length > 1) {
-                        return done(null, false, {
-                            message: MORE_THAN_ONE_USER_FOUND_MESSAGE
-                        });
-                    }
-                    return done(null, users[0]);
-                })
-                .catch((ex) => {
-                    return done(ex);
-                });
+            .then((users) => {
+                if (users.length < 1) {
+                    return done(null, false, {
+                        message: WRONG_USERNAME_OR_PASSWORD_MESSAGE
+                    });
+                } else if (users.length > 1) {
+                    return done(null, false, {
+                        message: MORE_THAN_ONE_USER_FOUND_MESSAGE
+                    });
+                }
+                return done(null, users[0]);
+            })
+            .catch((ex) => {
+                return done(ex);
+            });
         }
 
         // Register module

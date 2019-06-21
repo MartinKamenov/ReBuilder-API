@@ -5,6 +5,7 @@ import { Application } from 'express';
 import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInterface from '../../models/server/ResponseInterface';
 import LogoutRequest from './contracts/LogoutRequest';
+import AuthenticatedRequest from './contracts/AuthentedRequest';
 
 const { Router } = require('express');
 const passport = require('passport');
@@ -13,9 +14,9 @@ class AuthRoute implements Route {
     constructor(private app: Application) {}
     attach = () => {
         const router = new Router();
-    
+
         router
-            .post('/login', passport.authenticate('local', { 
+            .post('/login', passport.authenticate('local', {
                 successRedirect: '/auth/login/successfull',
                 failureRedirect: '/auth/login/unsuccessfull',
                 failureFlash: true
@@ -29,11 +30,13 @@ class AuthRoute implements Route {
                 failureRedirect: '/auth/register/unsuccessfull',
                 failureFlash: true
             }))
-            .get('/login/successfull', (req: RequestInterface, res: ResponseInterface) => {
-                res.status(constants.SUCCESS_STATUS_CODE).send('Successfull login');
+            .get('/login/successfull', (req: AuthenticatedRequest, res: ResponseInterface) => {
+                const user = controller.getUser(req);
+                res.status(constants.SUCCESS_STATUS_CODE).send(user);
             })
-            .get('/register/successfull', (req: RequestInterface, res: ResponseInterface) => {
-                res.status(constants.SUCCESS_STATUS_CODE).send('Successfull register');
+            .get('/register/successfull', (req: AuthenticatedRequest, res: ResponseInterface) => {
+                const user = controller.getUser(req);
+                res.status(constants.SUCCESS_STATUS_CODE).send(user);
             })
             .get('/login/unsuccessfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull login');
@@ -41,7 +44,7 @@ class AuthRoute implements Route {
             .get('/register/unsuccessfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull register');
             });
-    
+
         this.app.use('/auth', router);
     }
 };
