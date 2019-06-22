@@ -6,6 +6,7 @@ import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInterface from '../../models/server/ResponseInterface';
 import LogoutRequest from './contracts/LogoutRequest';
 import AuthenticatedRequest from './contracts/AuthentedRequest';
+import User from '../../models/contracts/User';
 
 const { Router } = require('express');
 const passport = require('passport');
@@ -16,27 +17,33 @@ class AuthRoute implements Route {
         const router = new Router();
 
         router
-            .post('/login', passport.authenticate('local', {
-                successRedirect: '/auth/login/successfull',
-                failureRedirect: '/auth/login/unsuccessfull',
-                failureFlash: true
-            }))
+            .post('/login', (req, res: ResponseInterface, next) => {
+                passport.authenticate('local', (err: Error, user: User) => {
+                    if (err) { return next(err); }
+                    if (!user) {
+                        return res.redirect('/auth/login/unsuccessfull');
+                    }
+                    req.logIn(user, (err: Error) => {
+                        if (err) { return next(err.message); }
+                        res.send(user);
+                    });
+                })(req, res, next);
+            })
+            .post('/register', (req, res: ResponseInterface, next) => {
+                passport.authenticate('local', (err: Error, user: User) => {
+                    if (err) { return next(err); }
+                    if (!user) {
+                        return res.redirect('/auth/register/unsuccessfull');
+                    }
+                    req.logIn(user, (err: Error) => {
+                        if (err) { return next(err.message); }
+                        res.send(user);
+                    });
+                })(req, res, next);
+            })
             .post('/logout', (req: LogoutRequest, res: ResponseInterface) => {
                 const result = controller.logout(req);
                 res.status(constants.SUCCESS_STATUS_CODE).send(result);
-            })
-            .post('/register', passport.authenticate('local', {
-                successRedirect: '/auth/register/successfull',
-                failureRedirect: '/auth/register/unsuccessfull',
-                failureFlash: true
-            }))
-            .get('/login/successfull', (req: AuthenticatedRequest, res: ResponseInterface) => {
-                const user = controller.getUser(req);
-                res.status(constants.SUCCESS_STATUS_CODE).send(user);
-            })
-            .get('/register/successfull', (req: AuthenticatedRequest, res: ResponseInterface) => {
-                const user = controller.getUser(req);
-                res.status(constants.SUCCESS_STATUS_CODE).send(user);
             })
             .get('/login/unsuccessfull', (req: RequestInterface, res: ResponseInterface) => {
                 res.status(constants.UNSUCCESS_STATUS_CODE).send('Unsuccessfull login');

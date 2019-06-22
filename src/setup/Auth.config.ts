@@ -117,7 +117,7 @@ const configAuth = (app: Application, userRepository: UserRepository) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser((user: User, done: Function) => {
+    passport.serializeUser((user: User, done) => {
         done(null, user.id);
     });
 
