@@ -2,9 +2,10 @@ import Project from "./contracts/Project";
 
 export default class ProjectModel implements Project {
     constructor(
-        public name: String,
-        public username: String,
-        public userId: String,
-        public projectImageUrl: String,
+        public name: string,
+        public username: string,
+        public userId: string,
+        public projectImageUrl: string,
+        public components: any[],
     ) {}
 }

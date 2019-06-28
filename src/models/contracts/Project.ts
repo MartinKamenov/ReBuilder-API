@@ -1,6 +1,7 @@
 export default interface Project {
-    name: String;
-    username: String;
-    userId: String;
-    projectImageUrl: String;
+    name: string;
+    username: string;
+    userId: string;
+    projectImageUrl: string;
+    components: any[];
 }

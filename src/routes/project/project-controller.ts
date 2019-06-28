@@ -27,7 +27,7 @@ const controller = {
                 return 'No name or no project image is passed';
             }
 
-            const project = new ProjectModel(name, user.username, user.id, projectImageUrl);
+            const project = new ProjectModel(name, user.username, user.id, projectImageUrl, []);
             await projectRepository.addProject(project);
             user.projects.push(project);
             await userRepository.updateUser(user.username, user);
