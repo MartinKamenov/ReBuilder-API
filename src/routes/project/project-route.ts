@@ -6,6 +6,7 @@ import { Application } from 'express';
 import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInteface from '../../models/server/ResponseInterface';
 import UserRepository from '../../models/repositories/UserRepository';
+import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
 
 const { Router } = require('express');
 const passport = require('passport');
@@ -23,9 +24,12 @@ class ProjectRoute implements Route {
                 const projects = await controller.getAllProjects(this.projectRepository);
                 res.send(projects);
             })
-            .post('/new', async (req: RequestInterface, res: ResponseInteface) => {
-                const projects = await controller.getAllProjects(
-                    this.projectRepository, this.userRepository, req);
+            .post('/new', async (req: AuthenticatedRequest, res: ResponseInteface) => {
+                const projects = await controller.createProject(
+                    this.projectRepository,
+                    this.userRepository,
+                    req,
+                );
                 res.send(projects);
             });
 
