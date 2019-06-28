@@ -28,7 +28,7 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     const routes: Array<Route> = [
         new AuthRoute(app),
-        new ProjectRoute(app, projectRepository)
+        new ProjectRoute(app, projectRepository, userRepository),
     ];
 
     app.use(cors());
@@ -52,7 +52,7 @@ const start = (setupConfiguration: SetupConfiguration) => {
     routes.forEach((route) => {
         route.attach();
     });
-    
+
     app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
 };
 

@@ -1,10 +1,10 @@
 import Project from './Project';
 
 export default interface User {
-    id: String;
-    username: String;
-    password: String;
-    email: String;
-    imageUrl: String;
+    id: string;
+    username: string;
+    password: string;
+    email: string;
+    imageUrl: string;
     projects: Array<Project>
 }
