@@ -3,11 +3,11 @@ import User from "./contracts/User";
 
 export default class UserModel implements User {
     constructor(
-        public id: String,
-        public username: String,
-        public password: String,
-        public email: String,
-        public imageUrl: String,
+        public id: string,
+        public username: string,
+        public password: string,
+        public email: string,
+        public imageUrl: string,
         public projects: Array<Project>
     ) {}
 }

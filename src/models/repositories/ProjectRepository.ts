@@ -2,7 +2,7 @@ import Project from "../contracts/Project";
 import Database from "../../database/Database";
 
 export default class ProjectRepository {
-    constructor(private database: Database, private collectionName: String) {}
+    constructor(private database: Database, private collectionName: string) {}
     getAllProjects(): Promise<Project[]> {
         return this.database.showAll(this.collectionName);
     }
@@ -11,11 +11,11 @@ export default class ProjectRepository {
         return this.database.insert(this.collectionName, user);
     }
 
-    findProjectById(id: String): Promise<Project[]> {
+    findProjectById(id: string): Promise<Project[]> {
         return this.database.find(this.collectionName, { id });
     }
 
-    updateProject(id: String, newProject: Project): Promise<Project[]> {
+    updateProject(id: string, newProject: Project): Promise<Project[]> {
         return this.database.update(this.collectionName, { id }, newProject);
     }
 };
