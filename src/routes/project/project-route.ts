@@ -9,7 +9,6 @@ import UserRepository from '../../models/repositories/UserRepository';
 import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
 
 const { Router } = require('express');
-const passport = require('passport');
 
 class ProjectRoute implements Route {
     constructor(

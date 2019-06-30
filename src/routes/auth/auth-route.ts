@@ -23,8 +23,9 @@ class AuthRoute implements Route {
                     if (!user) {
                         return res.redirect('/auth/login/unsuccessfull');
                     }
-                    req.logIn(user, (err: Error) => {
+                    req.logIn(user, { session: true }, (err: Error) => {
                         if (err) { return next(err.message); }
+                        res.cookie('userid', user.id, { maxAge: 2592000000 });
                         res.send(user);
                     });
                 })(req, res, next);
@@ -37,6 +38,7 @@ class AuthRoute implements Route {
                     }
                     req.logIn(user, (err: Error) => {
                         if (err) { return next(err.message); }
+                        res.cookie('userid', user.id, { maxAge: 2592000000 });
                         res.send(user);
                     });
                 })(req, res, next);
