@@ -22,7 +22,7 @@ class ProjectRoute implements Route {
         router
             .get('/', async (req: RequestInterface, res: ResponseInteface) => {
                 const projects = await controller.getAllProjects(this.projectRepository);
-                res.send(projects);
+                res.status(constants.SUCCESS_STATUS_CODE).send(projects);
             })
             .post('/new', async (req: AuthenticatedRequest, res: ResponseInteface) => {
                 const projects = await controller.createProject(
@@ -30,7 +30,7 @@ class ProjectRoute implements Route {
                     this.userRepository,
                     req,
                 );
-                res.send(projects);
+                res.status(constants.SUCCESS_STATUS_CODE).send(projects);
             });
 
         this.app.use('/projects', router);

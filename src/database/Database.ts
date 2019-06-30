@@ -2,7 +2,7 @@ const { MongoClient, ObjectID } = require('mongodb');
 
 class Database {
 
-    constructor(private connectionString: String) {
+    constructor(private connectionString: string) {
         this.connection = new Promise((resolve) => {
             resolve(MongoClient.connect(this.connectionString));
         });

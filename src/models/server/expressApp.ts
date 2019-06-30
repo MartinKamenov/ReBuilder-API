@@ -1,11 +1,11 @@
 export default interface expressApp {
-    get(route: String, callbackFunction: Function): Function;
+    get(route: string, callbackFunction: Function): Function;
 
-    post(route: String, callbackFunction: Function): Function;
+    post(route: string, callbackFunction: Function): Function;
 
-    put(route: String, callbackFunction: Function): Function;
+    put(route: string, callbackFunction: Function): Function;
 
-    delete(route: String, callbackFunction: Function): Function;
+    delete(route: string, callbackFunction: Function): Function;
 
     use: Function;
 
