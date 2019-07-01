@@ -17,18 +17,8 @@ class AuthRoute implements Route {
         const router = new Router();
 
         router
-            .post('/login', (req, res: ResponseInterface, next) => {
-                passport.authenticate('local', (err: Error, user: User) => {
-                    if (err) { return next(err); }
-                    if (!user) {
-                        return res.redirect('/auth/login/unsuccessfull');
-                    }
-                    req.logIn(user, { session: true }, (err: Error) => {
-                        if (err) { return next(err.message); }
-                        res.cookie('userid', user.id, { maxAge: 2592000000 });
-                        res.send(user);
-                    });
-                })(req, res, next);
+            .post('/login', (req, res: ResponseInterface) => {
+                controller.
             })
             .post('/register', (req, res: ResponseInterface, next) => {
                 passport.authenticate('local', (err: Error, user: User) => {
