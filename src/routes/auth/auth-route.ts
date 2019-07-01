@@ -7,18 +7,20 @@ import ResponseInterface from '../../models/server/ResponseInterface';
 import LogoutRequest from './contracts/LogoutRequest';
 import AuthenticatedRequest from './contracts/AuthentedRequest';
 import User from '../../models/contracts/User';
+import UserRepository from '../../models/repositories/UserRepository';
 
 const { Router } = require('express');
 const passport = require('passport');
 
 class AuthRoute implements Route {
-    constructor(private app: Application) {}
-    attach = () => {
+    constructor(private app: Application, private userRepository: UserRepository) {}
+    public attach = () => {
         const router = new Router();
 
         router
-            .post('/login', (req, res: ResponseInterface) => {
-                controller.
+            .post('/login', async (req, res: ResponseInterface) => {
+                const result = await controller.logIn(req, this.userRepository);
+                res.json(result);
             })
             .post('/register', (req, res: ResponseInterface, next) => {
                 passport.authenticate('local', (err: Error, user: User) => {

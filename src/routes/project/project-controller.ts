@@ -15,7 +15,7 @@ const controller = {
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
             const user = req.user;
-            if(!user) {
+            if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 

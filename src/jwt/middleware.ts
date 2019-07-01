@@ -1,5 +1,5 @@
 let jwt = require('jsonwebtoken');
-const config = require('./config.js');
+import secret from '../setup/secret.config';
 
 let checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] ||
@@ -10,7 +10,7 @@ let checkToken = (req, res, next) => {
   }
 
   if (token) {
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         return res.json({
           success: false,
@@ -29,6 +29,4 @@ let checkToken = (req, res, next) => {
   }
 };
 
-module.exports = {
-  checkToken,
-};
+export default checkToken;
