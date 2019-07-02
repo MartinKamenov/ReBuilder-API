@@ -38,7 +38,8 @@ const controller = {
                 return 'No name or no project image is passed';
             }
 
-            const project = new ProjectModel(uuid.v1(), name, user.username, user.id, projectImageUrl, [], Status.inDevelopment);
+            const project =
+                new ProjectModel(uuid.v1(), name, user.username, user.id, projectImageUrl, [], Status.inDevelopment);
             await projectRepository.addProject(project);
             user.projects.push(project);
             await userRepository.updateUser(user.username, user);
@@ -50,7 +51,7 @@ const controller = {
         req: AuthenticatedRequest) => {
             const headers = req.headers;
             let authorization = headers.authorization;
-            if(!authorization.startsWith('Bearer ')) {
+            if(!authorization || !authorization.startsWith('Bearer ')) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
@@ -60,9 +61,14 @@ const controller = {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
+            console.log('64');
+
             const components = req.body.components;
             const id = req.params.id;
+
+            console.log('id', id);
             if(!components) {
+                console.log('71');
                 const projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;

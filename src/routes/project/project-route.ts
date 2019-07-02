@@ -24,20 +24,21 @@ class ProjectRoute implements Route {
                 res.status(constants.SUCCESS_STATUS_CODE).send(projects);
             })
             .post('/new', async (req: AuthenticatedRequest, res: ResponseInteface) => {
-                const projects = await controller.createProject(
+                const project = await controller.createProject(
                     this.projectRepository,
                     this.userRepository,
                     req
                 );
-                res.status(constants.SUCCESS_STATUS_CODE).send(projects);
+                res.status(constants.SUCCESS_STATUS_CODE).send(project);
             })
             .post('/:id', async (req: AuthenticatedRequest, res: ResponseInteface) => {
-                const projects = await controller.editProject(
+                console.log('35');
+                const project = await controller.editProject(
                     this.projectRepository,
                     this.userRepository,
                     req
                 );
-                res.status(constants.SUCCESS_STATUS_CODE).send(projects);
+                res.status(constants.SUCCESS_STATUS_CODE).send(project);
             });
 
         this.app.use('/projects', router);
