@@ -1,4 +1,4 @@
-import Project from "./contracts/Project";
+import Project, { Status } from "./contracts/Project";
 
 export default class ProjectModel implements Project {
     constructor(
@@ -8,5 +8,6 @@ export default class ProjectModel implements Project {
         public userId: string,
         public projectImageUrl: string,
         public components: any[],
+        public status: Status
     ) {}
 }
