@@ -6,6 +6,8 @@ import constants from '../../constants/constants';
 import ProjectModel from "../../models/ProjectModel";
 import authenticationService from '../../services/authentication.service';
 
+const uuid = require('uuid');
+
 const controller = {
     getAllProjects: async (projectRepository: ProjectRepository) => {
         const projects = await projectRepository.getAllProjects();
@@ -35,7 +37,7 @@ const controller = {
                 return 'No name or no project image is passed';
             }
 
-            const project = new ProjectModel(name, user.username, user.id, projectImageUrl, []);
+            const project = new ProjectModel(uuid.v1(), name, user.username, user.id, projectImageUrl, []);
             await projectRepository.addProject(project);
             user.projects.push(project);
             await userRepository.updateUser(user.username, user);
