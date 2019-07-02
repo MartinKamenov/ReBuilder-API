@@ -1,4 +1,4 @@
-enum Status {
+export enum Status {
     deployed = "Deployed",
     inactive = "Inactive",
     inDevelopment = "In development"
