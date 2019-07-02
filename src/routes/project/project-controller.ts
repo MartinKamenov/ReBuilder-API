@@ -4,6 +4,7 @@ import AuthenticatedRequest from "../auth/contracts/AuthentedRequest";
 
 import constants from '../../constants/constants';
 import ProjectModel from "../../models/ProjectModel";
+import authenticationService from '../../services/authentication.service';
 
 const controller = {
     getAllProjects: async (projectRepository: ProjectRepository) => {
@@ -14,8 +15,15 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            const user = req.user;
-            if(!user) {
+            const headers = req.headers;
+            let authorization = headers.authorization;
+            if(!authorization.startsWith('Bearer ')) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
+
+            authorization = authorization.substring(7, authorization.length);
+            const user = authenticationService.retrieveUser(authorization);
+            if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 

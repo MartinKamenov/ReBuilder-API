@@ -7,18 +7,10 @@ import database from './database/connector';
 import ProjectRepository from './models/repositories/ProjectRepository';
 import UserRepository from './models/repositories/UserRepository';
 
-import authConfig from './setup/Auth.config';
-
 const express = require('express');
 const cors = require('cors');
 
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
 const bodyParser = require('body-parser');
-
-const sessionSecret = process.env.sessionSecret || 
-    require('../../credentials/credentialManager').sessionSecret;
 
 const start = (setupConfiguration: SetupConfiguration) => {
     const app = express();
@@ -26,28 +18,15 @@ const start = (setupConfiguration: SetupConfiguration) => {
     const projectRepository = new ProjectRepository(database, 'projects');
     const userRepository = new UserRepository(database, 'users');
 
-    const routes: Array<Route> = [
-        new AuthRoute(app),
+    const routes: Route[] = [
+        new AuthRoute(app, userRepository),
         new ProjectRoute(app, projectRepository, userRepository),
     ];
 
     app.use(cors());
-
-    app.use(cookieParser('secret'));
-    app.use(session({
-        secret: sessionSecret,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: 600000000
-        },
-    }));
-    app.use(flash());
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(bodyParser.json());
-
-    authConfig(app, userRepository);
 
     routes.forEach((route) => {
         route.attach();
