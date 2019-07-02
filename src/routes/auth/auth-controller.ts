@@ -22,7 +22,7 @@ const controller = {
             return constants.UNAUTHORIZED_USER_MESSAGE;
         }
 
-        const token = jwt.sign({ username },
+        const token = jwt.sign({ user: users[0] },
             secret,
             {
                 expiresIn: '24h'
