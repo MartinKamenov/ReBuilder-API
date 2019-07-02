@@ -1,13 +1,12 @@
 import Route from '../contracts/Route';
-import controller from "./project-controller";
-import constants from "../../constants/constants";
+import controller from './project-controller';
+import constants from '../../constants/constants';
 import ProjectRepository from '../../models/repositories/ProjectRepository';
 import { Application } from 'express';
 import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInteface from '../../models/server/ResponseInterface';
 import UserRepository from '../../models/repositories/UserRepository';
 import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
-import checkToken from '../../jwt/middleware';
 
 const { Router } = require('express');
 
@@ -26,6 +25,14 @@ class ProjectRoute implements Route {
             })
             .post('/new', async (req: AuthenticatedRequest, res: ResponseInteface) => {
                 const projects = await controller.createProject(
+                    this.projectRepository,
+                    this.userRepository,
+                    req
+                );
+                res.status(constants.SUCCESS_STATUS_CODE).send(projects);
+            })
+            .post('/:id', async (req: AuthenticatedRequest, res: ResponseInteface) => {
+                const projects = await controller.editProject(
                     this.projectRepository,
                     this.userRepository,
                     req

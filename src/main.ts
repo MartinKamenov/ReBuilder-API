@@ -1,4 +1,4 @@
-import SetupConfiguration from "./setup/SetupConfiguration";
+import SetupConfiguration from './setup/SetupConfiguration';
 
 const start = require('./server');
 const port = process.env.PORT || '5000';

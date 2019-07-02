@@ -1,5 +1,5 @@
-import Project from "../contracts/Project";
-import Database from "../../database/Database";
+import Project from '../contracts/Project';
+import Database from '../../database/Database';
 
 export default class ProjectRepository {
     constructor(private database: Database, private collectionName: string) {}

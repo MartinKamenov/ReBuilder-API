@@ -1,4 +1,4 @@
-import Project from "./contracts/Project";
+import Project from './contracts/Project';
 
 export default class ProjectModel implements Project {
     constructor(
