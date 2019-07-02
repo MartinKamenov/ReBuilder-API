@@ -32,7 +32,6 @@ class ProjectRoute implements Route {
                 res.status(constants.SUCCESS_STATUS_CODE).send(project);
             })
             .post('/:id', async (req: AuthenticatedRequest, res: ResponseInteface) => {
-                console.log('35');
                 const project = await controller.editProject(
                     this.projectRepository,
                     this.userRepository,

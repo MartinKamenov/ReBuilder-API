@@ -61,14 +61,10 @@ const controller = {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            console.log('64');
-
             const components = req.body.components;
             const id = req.params.id;
 
-            console.log('id', id);
             if(!components) {
-                console.log('71');
                 const projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;
