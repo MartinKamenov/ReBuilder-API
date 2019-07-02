@@ -60,6 +60,11 @@ const controller = {
 
         const user = new UserModel(uuid.v1(), username, password, email, imageUrl, projects);
 
+        const foundUsers = await userRepository.findUserByUsername(username);
+        if(foundUsers.length > 0) {
+            return constants.USERNAME_IS_TAKEN_MESSAGE;
+        }
+
         await userRepository.addUser(user);
 
         const token = jwt.sign({ user },
