@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const authenticationService = {
     isAuthenticated: (token: string): boolean => {
         try {
-            const decoded = jwt.verify(token, secret);
+            jwt.verify(token, secret);
             return true;
         } catch (e) {
             return false;
