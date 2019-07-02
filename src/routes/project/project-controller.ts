@@ -4,9 +4,7 @@ import AuthenticatedRequest from "../auth/contracts/AuthentedRequest";
 
 import constants from '../../constants/constants';
 import ProjectModel from "../../models/ProjectModel";
-import secret from '../../setup/secret.config';
-
-const jwt = require('jsonwebtoken');
+import authenticationService from '../../services/authentication.service';
 
 const controller = {
     getAllProjects: async (projectRepository: ProjectRepository) => {
@@ -22,14 +20,9 @@ const controller = {
             if(!authorization.startsWith('Bearer ')) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
+
             authorization = authorization.substring(7, authorization.length);
-            let decoded;
-            try {
-                decoded = jwt.verify(authorization, secret);
-            } catch (e) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
-            const user = decoded.user;
+            const user = authenticationService.retrieveUser(authorization);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }

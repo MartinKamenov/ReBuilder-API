@@ -13,7 +13,8 @@
         "ordered-imports": [ false ],
         "no-string-literal": false,
         "object-literal-sort-keys": false,
-        "whitespace": [ false ]
+        "whitespace": [ false ],
+        "no-var-requires": false
     },
     "rulesDirectory": []
 }

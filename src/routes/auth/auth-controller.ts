@@ -5,6 +5,7 @@ import RequestInterface from '../../models/server/RequestInterface';
 import constants from '../../constants/constants';
 import middleware from '../../jwt/middleware';
 import secret from '../../setup/secret.config';
+import UserModel from '../../models/UserModel';
 
 const jwt = require('jsonwebtoken');
 
@@ -22,7 +23,15 @@ const controller = {
             return constants.UNAUTHORIZED_USER_MESSAGE;
         }
 
-        const token = jwt.sign({ user: users[0] },
+        const user = new UserModel(
+            users[0].id,
+            users[0].username,
+            users[0].password,
+            users[0].email,
+            users[0].imageUrl,
+            users[0].projects
+        );
+        const token = jwt.sign({ user },
             secret,
             {
                 expiresIn: '24h'
@@ -32,7 +41,7 @@ const controller = {
         return {
             success: true,
             message: constants.SUCCESSFULL_LOGIN_MESSAGE,
-            user: users[0],
+            user,
             token
         };
     },
