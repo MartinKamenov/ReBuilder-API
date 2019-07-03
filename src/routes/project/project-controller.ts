@@ -73,14 +73,9 @@ const controller = {
                 return projects[0];
             }
 
-            let index = -1;
-            const project = user.projects.find((p, i) => {
-                if(p.id === id) {
-                    index = i;
-                }
-
-                return p.id === id;
-            });
+            const projects = await projectRepository.findProjectById(id);
+            const project = projects[0];
+            const index = user.projects.find((p) => (p.id === id));
 
             project.components = components;
             user.projects[index] = project;
