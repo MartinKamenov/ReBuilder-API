@@ -1,7 +1,7 @@
 export enum Status {
-    deployed = "Deployed",
-    inactive = "Inactive",
-    inDevelopment = "In development"
+    deployed = 'Deployed',
+    inactive = 'Inactive',
+    inDevelopment = 'In development'
 }
 export default interface Project {
     id: string;
