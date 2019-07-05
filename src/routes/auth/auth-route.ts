@@ -23,6 +23,10 @@ class AuthRoute implements Route {
                 const result = await controller.register(req, this.userRepository);
                 res.json(result);
             })
+            .get('/user', async (req, res: ResponseInterface) => {
+                const result = await controller.getUser(req);
+                res.json(result);
+            })
             .post('/logout', (req: LogoutRequest, res: ResponseInterface) => {
                 const result = controller.logout(req);
                 res.status(constants.SUCCESS_STATUS_CODE).send(result);

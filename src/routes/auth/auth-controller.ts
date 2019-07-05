@@ -1,11 +1,11 @@
 import AuthenticatedRequest from './contracts/AuthentedRequest';
-import LogoutRequest from './contracts/LogoutRequest';
 import UserRepository from '../../models/repositories/UserRepository';
 import RequestInterface from '../../models/server/RequestInterface';
 import constants from '../../constants/constants';
-import middleware from '../../jwt/middleware';
 import secret from '../../setup/secret.config';
 import UserModel from '../../models/UserModel';
+import authenticationService from '../../services/authentication.service';
+import LogoutRequest from './contracts/LogoutRequest';
 const uuid = require('uuid');
 
 const jwt = require('jsonwebtoken');
@@ -81,6 +81,16 @@ const controller = {
             token
         };
     },
+    getUser: (requestObject: RequestInterface) => {
+        const token: string = requestObject.body.token;
+        if(!token) {
+            return constants.UNAUTHORIZED_USER_MESSAGE;
+        }
+
+        const user = authenticationService.retrieveUser(token);
+        return user;
+    },
+
     logout: (requestObject: LogoutRequest) => {
         requestObject.logout();
         return constants.SUCCESSFULL_LOGOUT_MESSAGE;
