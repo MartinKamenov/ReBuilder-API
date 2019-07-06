@@ -25,19 +25,20 @@ const controller = {
             }
 
             authorization = authorization.substring(7, authorization.length);
-            const user = authenticationService.retrieveUser(authorization);
+            let user = authenticationService.retrieveUser(authorization);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
+
+            let users = await userRepository.findUserByUsername(user.username);
+            user = users[0];
 
             const body = req.body;
             let name = body.name;
             const projectImageUrl = body.projectImageUrl;
             if(!name || !projectImageUrl) {
-                name = name.trim();
                 return 'No name or no project image is passed';
             }
-
             const project =
                 new ProjectModel(uuid.v1(), name, user.username, user.id, projectImageUrl, [], Status.inDevelopment);
             await projectRepository.addProject(project);

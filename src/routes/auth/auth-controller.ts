@@ -81,13 +81,15 @@ const controller = {
             token
         };
     },
-    getUser: (requestObject: RequestInterface) => {
+    getUser: async(requestObject: RequestInterface, userRepository: UserRepository) => {
         const token: string = requestObject.body.token;
         if(!token) {
             return constants.UNAUTHORIZED_USER_MESSAGE;
         }
 
-        const user = authenticationService.retrieveUser(token);
+        let user = authenticationService.retrieveUser(token);
+        const users = await userRepository.findUserByUsername(user.username);
+        user = users[0];
         return user;
     },
 
