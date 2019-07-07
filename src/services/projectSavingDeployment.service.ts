@@ -9,6 +9,7 @@ const projectSavingDeploymentService = {
         const templates = templatingService.getAllTemplates(name, droppedComponents);
         templates.forEach(async (templateObject) => {
             const filePath = 'deployments/' + id + '/' + templateObject.filePath;
+            // tslint:disable-next-line:no-console
             await fse.outputFile(filePath, templateObject.template).catch(console.log);
         });
     }
