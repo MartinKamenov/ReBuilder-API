@@ -8,7 +8,7 @@ const deploymentService = {
         .saveDeploymentProject(project.id, project.name, project.components);
         const path = './deployments/' + project.id;
         try {
-            if(!portService.hasPort(project.id)) {
+            if(portService.hasPort(project.id)) {
                 return portService.getPort(project.id);
             }
 

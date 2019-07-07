@@ -112,7 +112,7 @@ const controller = {
                 }
 
                 const project = foundProjects[0];
-                const port = deploymentService.deployProject(project);
+                const port = await deploymentService.deployProject(project);
                 return {
                     port,
                     projectUrl: `https://rebuilder-api.herokuapp.com:${port}`
