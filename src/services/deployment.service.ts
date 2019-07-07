@@ -7,16 +7,15 @@ const deploymentService = {
         .saveDeploymentProject(project.id, project.name, project.components);
         const path = './deployments/' + project.id;
         try {
-            const commands = [`npm install --prefix ${path}`,
-            'SET PORT=3100',
-            `npm start --prefix ${path}`];
-            for(let i = 0; i < commands.length; i++) {
-                const { stdout } = await exec(commands[i]);
+            const commands = [`cd ${path} && npm install && SET PORT=3100 && npm start`];
+            commands.forEach(async (command) => {
+                const { stdout } = await exec(command);
+                // tslint:disable-next-line:no-console
                 console.log(stdout);
-            }
+            });
         } catch(error) {
             // tslint:disable-next-line:no-console
-            console.log(error);
+            return error;
         }
     },
 };
