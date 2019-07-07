@@ -1,9 +1,9 @@
 import projectSavingDeploymentService from './projectSavingDeployment.service';
 
 const deploymentService = {
-    deployProject: (project) => {
-        projectSavingDeploymentService
-        .saveDeploymentProject(project.name, project.components);
+    deployProject: async (project) => {
+        await projectSavingDeploymentService
+        .saveDeploymentProject(project.id, project.name, project.components);
     }
 };
 

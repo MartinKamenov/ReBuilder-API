@@ -32,7 +32,7 @@ const start = (setupConfiguration: SetupConfiguration) => {
         route.attach();
     });
 
-    app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
+    app.listen(setupConfiguration.port, '192.168.0.104', setupConfiguration.listenCallback);
 };
 
 module.exports = start;

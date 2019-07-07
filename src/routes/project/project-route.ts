@@ -40,12 +40,12 @@ class ProjectRoute implements Route {
                 res.status(constants.SUCCESS_STATUS_CODE).send(project);
             })
             .post('/:id/deploy', async (req: AuthenticatedRequest, res: ResponseInteface) => {
-                const project = await controller.deployProject(
+                const result = await controller.deployProject(
                     this.projectRepository,
                     this.userRepository,
                     req
                 );
-                res.status(constants.SUCCESS_STATUS_CODE).send(project);
+                res.status(constants.SUCCESS_STATUS_CODE).send(result);
             });
 
         this.app.use('/projects', router);

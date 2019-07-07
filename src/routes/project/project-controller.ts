@@ -113,6 +113,7 @@ const controller = {
 
                 const project = foundProjects[0];
                 deploymentService.deployProject(project);
+                return 'Project is deployed';
         }
 };
 

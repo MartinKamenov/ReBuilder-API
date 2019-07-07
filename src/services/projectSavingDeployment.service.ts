@@ -1,17 +1,15 @@
 import templatingService from './templating.service';
 const fs = require('fs');
+const mkdirp = require('mkdirp');
+const getDirName = require('path').dirname;
+const fse = require('fs-extra');
 
 const projectSavingDeploymentService = {
-    saveDeploymentProject: (name, droppedComponents) => {
+    saveDeploymentProject: async (id, name, droppedComponents) => {
         const templates = templatingService.getAllTemplates(name, droppedComponents);
-        templates.forEach((templateObject) => {
-            fs.writeFile('../../deployments/' + name + '/' + templateObject.filePath,
-                templateObject.template, (err) => {
-                if(err) {
-                    // tslint:disable-next-line:no-console
-                    return console.log(err);
-                }
-            });
+        templates.forEach(async (templateObject) => {
+            const filePath = 'deployments/' + id + '/' + templateObject.filePath;
+            await fse.outputFile(filePath, templateObject.template).catch(console.log);
         });
     }
 };
