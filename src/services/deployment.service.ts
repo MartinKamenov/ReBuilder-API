@@ -13,7 +13,10 @@ const deploymentService = {
             }
 
             const port = portService.getPort(project.id);
-            const commands = [`cd ${path} && npm install && SET PORT=${port} && npm start`];
+            const herokuGitUrl = 'https://git.heroku.com/' + project.name + '.git';
+            const commands = [`cd ${path} && git init && heroku create ${project.name} && ` +
+                `git remote add origin ${herokuGitUrl} && ` +
+                `git add . && git commit -m "Bla" && git push -u origin master`];
             commands.forEach(async (command) => {
                 const { stdout } = await exec(command);
                 // tslint:disable-next-line:no-console
