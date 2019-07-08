@@ -109,7 +109,7 @@ export default MainComponent;
 `
             },
             {
-                filePath: './.gitignore',
+                filePath: '.gitignore',
                 template:
 `# Logs
 logs
