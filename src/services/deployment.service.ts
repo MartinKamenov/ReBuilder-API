@@ -2,9 +2,6 @@ import projectSavingDeploymentService from './projectSavingDeployment.service';
 import Project from '../models/contracts/Project';
 const exec = require('child-process-promise').exec;
 
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
 const deploymentService = {
     deployProject: async (project: Project): Promise<string> => {
         await projectSavingDeploymentService
@@ -29,7 +26,6 @@ const deploymentService = {
                 } catch(er) {
                     console.log(er);
                 }
-                await sleep(10000);
             }
 
             return `https://${name}.herokuapp.com`;
