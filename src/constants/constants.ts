@@ -7,7 +7,8 @@ const constants = {
     UNAUTHORIZED_USER_MESSAGE: 'Unauthorized user',
     SUCCESSFULL_LOGIN_MESSAGE: 'Successfull login',
     SUCCESSFULL_REGISTRATION_MESSAGE: 'Successfull registration',
-    USERNAME_IS_TAKEN_MESSAGE: 'Username has awready been taken'
+    USERNAME_IS_TAKEN_MESSAGE: 'Username has awready been taken',
+    SUCCESSFULL_DEPLOYMENT: 'Project was successfully deployed'
 };
 
 export default constants;

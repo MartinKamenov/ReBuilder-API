@@ -5,7 +5,8 @@ import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
 import constants from '../../constants/constants';
 import ProjectModel from '../../models/ProjectModel';
 import authenticationService from '../../services/authentication.service';
-import { Status } from "../../models/contracts/Project";
+import { Status } from '../../models/contracts/Project';
+import deploymentService from '../../services/deployment.service';
 
 const uuid = require('uuid');
 
@@ -87,6 +88,36 @@ const controller = {
 
             return project;
         },
+
+        deployProject: async (
+            projectRepository: ProjectRepository,
+            userRepository: UserRepository,
+            req: AuthenticatedRequest) => {
+                const headers = req.headers;
+                let authorization = headers.authorization;
+                if(!authorization || !authorization.startsWith('Bearer ')) {
+                    return constants.UNAUTHORIZED_USER_MESSAGE;
+                }
+
+                authorization = authorization.substring(7, authorization.length);
+                const user = authenticationService.retrieveUser(authorization);
+                if (!user) {
+                    return constants.UNAUTHORIZED_USER_MESSAGE;
+                }
+
+                const id = req.params.id;
+                const foundProjects = await projectRepository.findProjectById(id);
+                if(foundProjects.length !== 1) {
+                    return 'No project was found';
+                }
+
+                const project = foundProjects[0];
+                const url = await deploymentService.deployProject(project);
+                return {
+                    message: constants.SUCCESSFULL_DEPLOYMENT,
+                    projectUrl: url
+                };
+        }
 };
 
 export default controller;
