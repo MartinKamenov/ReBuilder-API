@@ -14,18 +14,23 @@ const deploymentService = {
             const name = project.name.toLowerCase().trim().replace(/\s/g, '-');
             const herokuGitUrl = 'https://git.heroku.com/' + name + '.git';
             const commands = [
-                `cd ${path}`,
-                `git init`,
-                `heroku create ${name}`,
-                `git remote set-url origin ${herokuGitUrl}`,
-                `git add . && git commit -m "Auto generated commit"`,
-                `git push -u origin master`];
-            commands.forEach(async (command) => {
-                await exec(command);
-                // tslint:disable-next-line:no-console
+                { command: `git init`, shouldExecute: true },
+                { command: `heroku create ${name}`, shouldExecute: true },
+                { command: `git remote add origin ${herokuGitUrl}`, shouldExecute: true },
+                { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
+                { command: `git push -u origin master`, shouldExecute: true }];
+
+            // tslint:disable-next-line:prefer-for-of
+            for(let i = 0; i < commands.length; i++) {
+                const command = `cd ${path} && ${commands[i].command}`;
                 console.log('executed ' + command);
+                try {
+                    await exec(command);
+                } catch(er) {
+                    console.log(er);
+                }
                 await sleep(10000);
-            });
+            }
 
             return `https://${name}.herokuapp.com`;
         } catch(error) {
