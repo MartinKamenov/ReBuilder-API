@@ -23,7 +23,7 @@ const deploymentService = {
                 await exec(command);
                 // tslint:disable-next-line:no-console
                 console.log('executed ' + command);
-                await sleep(3000);
+                await sleep(10000);
             });
 
             return `https://${name}.herokuapp.com`;
