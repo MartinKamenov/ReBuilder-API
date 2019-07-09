@@ -16,8 +16,10 @@ const deploymentService = {
             const commands = [
                 `git init`,
                 `heroku create ${name}`,
+                `git remote rm origin`,
+                `git remote add origin ${herokuGitUrl}`,
                 `git add . && git commit -m "Auto generated commit"`,
-                `git push heroku master`];
+                `git push -u origin master`];
             commands.forEach(async (command) => {
                 await exec(command);
                 // tslint:disable-next-line:no-console
