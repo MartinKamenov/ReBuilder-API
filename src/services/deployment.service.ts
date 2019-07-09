@@ -14,6 +14,7 @@ const deploymentService = {
             const name = project.name.toLowerCase().trim().replace(/\s/g, '-');
             const herokuGitUrl = 'https://git.heroku.com/' + name + '.git';
             const commands = [
+                `cd ${path}`,
                 `git init`,
                 `heroku create ${name}`,
                 `git remote set-url origin ${herokuGitUrl}`,
