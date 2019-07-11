@@ -1,4 +1,5 @@
 import secret from '../setup/secret.config';
+import UserRepository from '../models/repositories/UserRepository';
 const jwt = require('jsonwebtoken');
 
 const authenticationService = {
@@ -11,15 +12,18 @@ const authenticationService = {
         }
     },
 
-    retrieveUser: (token: string) => {
-        let decoded;
+    retrieveUser: async (token: string, userRepository: UserRepository) => {
         try {
-            decoded = jwt.verify(token, secret);
+            const decoded = jwt.verify(token, secret);
+            const jwtUser = decoded.user;
+            const users = await userRepository.findUserByUsername(jwtUser.username);
+            const user = users[0];
+            return user;
         } catch (e) {
+            // tslint:disable-next-line:no-console
+            console.log(e);
             return null;
         }
-        const user = decoded.user;
-        return user;
     }
 };
 

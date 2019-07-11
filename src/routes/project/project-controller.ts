@@ -25,17 +25,16 @@ const controller = {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            authorization = authorization.substring(7, authorization.length);
-            let user = authenticationService.retrieveUser(authorization);
-            if (!user) {
+            const token = authorization.substring(7, authorization.length);
+
+            if (!authenticationService.isAuthenticated(token)) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            let users = await userRepository.findUserByUsername(user.username);
-            user = users[0];
+            const user = await authenticationService.retrieveUser(token, userRepository);
 
             const body = req.body;
-            let name = body.name;
+            const name = body.name;
             const projectImageUrl = body.projectImageUrl;
             if(!name || !projectImageUrl) {
                 return 'No name or no project image is passed';
@@ -52,16 +51,17 @@ const controller = {
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
             const headers = req.headers;
-            let authorization = headers.authorization;
+            const authorization = headers.authorization;
             if(!authorization || !authorization.startsWith('Bearer ')) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            authorization = authorization.substring(7, authorization.length);
-            const user = authenticationService.retrieveUser(authorization);
-            if (!user) {
+            const token = authorization.substring(7, authorization.length);
+            if (!authenticationService.isAuthenticated(token)) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
+
+            const user = await authenticationService.retrieveUser(token, userRepository);
 
             const components = req.body.components;
             const id = req.params.id;
@@ -77,7 +77,7 @@ const controller = {
 
             const projects = await projectRepository.findProjectById(id);
             const project = projects[0];
-            const index = user.projects.find((p) => (p.id === id));
+            const index = user.projects.findIndex((p) => (p.id === id));
 
             project.components = components;
             user.projects[index] = project;
@@ -94,14 +94,14 @@ const controller = {
             userRepository: UserRepository,
             req: AuthenticatedRequest) => {
                 const headers = req.headers;
-                let authorization = headers.authorization;
+                const authorization = headers.authorization;
                 if(!authorization || !authorization.startsWith('Bearer ')) {
                     return constants.UNAUTHORIZED_USER_MESSAGE;
                 }
 
-                authorization = authorization.substring(7, authorization.length);
-                const user = authenticationService.retrieveUser(authorization);
-                if (!user) {
+                const token = authorization.substring(7, authorization.length);
+
+                if (!authenticationService.isAuthenticated(token)) {
                     return constants.UNAUTHORIZED_USER_MESSAGE;
                 }
 
