@@ -57,37 +57,41 @@ const controller = {
             }
 
             const token = authorization.substring(7, authorization.length);
-            if (!authenticationService.isAuthenticated(token)) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
-
             const user = await authenticationService.retrieveUser(token, userRepository);
+            return {
+                token,
+                user
+            };
+            // if (!authenticationService.isAuthenticated(token)) {
+            //     return constants.UNAUTHORIZED_USER_MESSAGE;
+            // }
 
-            const components = req.body.components;
-            const id = req.params.id;
+            // const user = await authenticationService.retrieveUser(token, userRepository);
 
-            if(!components) {
-                const projects = await projectRepository.findProjectById(id);
-                if(projects.length !== 1) {
-                    return `No project with ${id} was found`;
-                }
+            // const components = req.body.components;
+            // const id = req.params.id;
 
-                return projects[0];
-            }
+            // if(!components) {
+            //     const projects = await projectRepository.findProjectById(id);
+            //     if(projects.length !== 1) {
+            //         return `No project with ${id} was found`;
+            //     }
 
-            const projects = await projectRepository.findProjectById(id);
-            const project = projects[0];
-            return project;
-            const index = user.projects.findIndex((p) => (p.id === id));
+            //     return projects[0];
+            // }
 
-            project.components = components;
-            user.projects[index] = project;
+            // const projects = await projectRepository.findProjectById(id);
+            // const project = projects[0];
+            // const index = user.projects.findIndex((p) => (p.id === id));
 
-            await userRepository.updateUser(user.username, user);
+            // project.components = components;
+            // user.projects[index] = project;
 
-            await projectRepository.updateProject(project.id, project);
+            // await userRepository.updateUser(user.username, user);
 
-            return project;
+            // await projectRepository.updateProject(project.id, project);
+
+            // return project;
         },
 
         deployProject: async (
