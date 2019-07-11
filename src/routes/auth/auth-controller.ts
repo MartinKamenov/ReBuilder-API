@@ -88,8 +88,12 @@ const controller = {
         }
 
         const user = await authenticationService.retrieveUser(token, userRepository);
-        user.token = token;
-        return user;
+        return {
+            success: true,
+            message: constants.SUCCESSFULL_LOGIN_MESSAGE,
+            user,
+            token
+        };
     },
 
     logout: (requestObject: LogoutRequest) => {
