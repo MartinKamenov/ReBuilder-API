@@ -16,7 +16,6 @@ const authenticationService = {
         try {
             const decoded = jwt.verify(token, secret);
             const jwtUser = decoded.user;
-            return jwtUser;
             const users = await userRepository.findUserByUsername(jwtUser.username);
             const user = users[0];
             return user;

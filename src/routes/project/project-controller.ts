@@ -57,41 +57,36 @@ const controller = {
             }
 
             const token = authorization.substring(7, authorization.length);
+            if (!authenticationService.isAuthenticated(token)) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
+
             const user = await authenticationService.retrieveUser(token, userRepository);
-            return {
-                token,
-                user
-            };
-            // if (!authenticationService.isAuthenticated(token)) {
-            //     return constants.UNAUTHORIZED_USER_MESSAGE;
-            // }
 
-            // const user = await authenticationService.retrieveUser(token, userRepository);
+            const components = req.body.components;
+            const id = req.params.id;
 
-            // const components = req.body.components;
-            // const id = req.params.id;
+            if(!components) {
+                const projects = await projectRepository.findProjectById(id);
+                if(projects.length !== 1) {
+                    return `No project with ${id} was found`;
+                }
 
-            // if(!components) {
-            //     const projects = await projectRepository.findProjectById(id);
-            //     if(projects.length !== 1) {
-            //         return `No project with ${id} was found`;
-            //     }
+                return projects[0];
+            }
 
-            //     return projects[0];
-            // }
+            const projects = await projectRepository.findProjectById(id);
+            const project = projects[0];
+            const index = user.projects.findIndex((p) => (p.id === id));
 
-            // const projects = await projectRepository.findProjectById(id);
-            // const project = projects[0];
-            // const index = user.projects.findIndex((p) => (p.id === id));
+            project.components = components;
+            user.projects[index] = project;
 
-            // project.components = components;
-            // user.projects[index] = project;
+            await userRepository.updateUser(user.username, user);
 
-            // await userRepository.updateUser(user.username, user);
+            await projectRepository.updateProject(project.id, project);
 
-            // await projectRepository.updateProject(project.id, project);
-
-            // return project;
+            return project;
         },
 
         deployProject: async (
