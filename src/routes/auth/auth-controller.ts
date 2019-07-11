@@ -88,6 +88,7 @@ const controller = {
         }
 
         const user = await authenticationService.retrieveUser(token, userRepository);
+        user.token = token;
         return user;
     },
 
