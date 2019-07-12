@@ -1,4 +1,5 @@
 import Project, { Status } from './contracts/Project';
+import Page from './contracts/Page';
 
 export default class ProjectModel implements Project {
     constructor(
@@ -7,7 +8,7 @@ export default class ProjectModel implements Project {
         public username: string,
         public userId: string,
         public projectImageUrl: string,
-        public components: any[],
+        public pages: Page[],
         public status: Status
     ) {}
 }

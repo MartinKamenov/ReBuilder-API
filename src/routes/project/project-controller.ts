@@ -63,10 +63,10 @@ const controller = {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            const components = req.body.components;
+            const pages = req.body.pages;
             const id = req.params.id;
 
-            if(!components) {
+            if(!pages) {
                 const projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;
@@ -79,7 +79,7 @@ const controller = {
             const project = projects[0];
             const index = user.projects.findIndex((p) => (p.id === id));
 
-            project.components = components;
+            project.pages = pages;
             user.projects[index] = project;
 
             await userRepository.updateUser(user.username, user);
