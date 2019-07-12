@@ -14,7 +14,8 @@
         "no-string-literal": false,
         "object-literal-sort-keys": false,
         "whitespace": [ false ],
-        "no-var-requires": false
+        "no-var-requires": false,
+        "interface-name": false
     },
     "rulesDirectory": []
 }
