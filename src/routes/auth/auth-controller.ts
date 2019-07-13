@@ -35,7 +35,7 @@ const controller = {
         const token = jwt.sign({ user },
             secret,
             {
-                expiresIn: '24h'
+                expiresIn: '14d'
             }
         );
 
@@ -70,7 +70,7 @@ const controller = {
         const token = jwt.sign({ user },
             secret,
             {
-                expiresIn: '24h'
+                expiresIn: '14d'
             }
         );
 

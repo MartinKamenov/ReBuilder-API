@@ -5,7 +5,7 @@ const exec = require('child-process-promise').exec;
 const deploymentService = {
     deployProject: async (project: Project): Promise<string> => {
         await projectSavingDeploymentService
-        .saveDeploymentProject(project.id, project.name, project.components);
+        .saveDeploymentProject(project.id, project.name, project.pages);
         const path = './deployments/' + project.id;
         try {
             const name = project.name.toLowerCase().trim().replace(/\s/g, '-');
