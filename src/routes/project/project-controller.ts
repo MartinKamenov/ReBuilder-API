@@ -58,10 +58,13 @@ const controller = {
             }
 
             authorization = authorization.substring(7, authorization.length);
-            const user = authenticationService.retrieveUser(authorization);
+            let user = authenticationService.retrieveUser(authorization);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
+
+            const users = await userRepository.findUserByUsername(user.username);
+            user = users[0];
 
             const pages = req.body.pages;
             const id = req.params.id;
@@ -77,10 +80,13 @@ const controller = {
 
             const projects = await projectRepository.findProjectById(id);
             const project = projects[0];
+            console.log(user.projects);
+            console.log(project);
             const index = user.projects.findIndex((p) => (p.id === id));
 
             project.pages = pages;
             user.projects[index] = project;
+            console.log('user.projects', user.projects);
 
             await userRepository.updateUser(user.username, user);
 
