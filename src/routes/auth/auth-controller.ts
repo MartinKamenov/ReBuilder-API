@@ -81,7 +81,7 @@ const controller = {
             token
         };
     },
-    getUser: async(requestObject: RequestInterface, userRepository: UserRepository) => {
+    getUser: async (requestObject: RequestInterface, userRepository: UserRepository) => {
         const token: string = requestObject.body.token;
         if(!token) {
             return constants.UNAUTHORIZED_USER_MESSAGE;
@@ -92,10 +92,21 @@ const controller = {
         user = users[0];
         return user;
     },
+    updateUser: async (requestObject: RequestInterface, userRepository: UserRepository) => {
+        const token: string = requestObject.body.token;
+        if(!token) {
+            return constants.UNAUTHORIZED_USER_MESSAGE;
+        }
 
-    logout: (requestObject: LogoutRequest) => {
-        requestObject.logout();
-        return constants.SUCCESSFULL_LOGOUT_MESSAGE;
+        let user = authenticationService.retrieveUser(token);
+        const users = await userRepository.findUserByUsername(user.username);
+        user = users[0];
+
+        const imageUrl = requestObject.body.imageUrl;
+        user.imageUrl = imageUrl;
+
+        await userRepository.updateUser(user.username, user);
+        return 'Successfully updated';
     }
 };
 

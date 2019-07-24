@@ -27,9 +27,9 @@ class AuthRoute implements Route {
                 const result = await controller.getUser(req, this.userRepository);
                 res.json(result);
             })
-            .post('/logout', (req: LogoutRequest, res: ResponseInterface) => {
-                const result = controller.logout(req);
-                res.status(constants.SUCCESS_STATUS_CODE).send(result);
+            .post('/user/update', async (req, res: ResponseInterface) => {
+                const result = await controller.updateUser(req, this.userRepository);
+                res.json(result);
             });
 
         this.app.use('/auth', router);
