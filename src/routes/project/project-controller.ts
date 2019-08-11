@@ -40,8 +40,19 @@ const controller = {
             if(!name || !projectImageUrl) {
                 return 'No name or no project image is passed';
             }
-            const project =
-                new ProjectModel(uuid.v1(), name, user.username, user.id, projectImageUrl, [], Status.inDevelopment);
+
+            const projectPassedInBody = req.body.project;
+
+            const project = projectPassedInBody ? projectPassedInBody :
+                new ProjectModel(
+                    uuid.v1(),
+                    name,
+                    user.username,
+                    user.id,
+                    projectImageUrl,
+                    [],
+                    Status.inDevelopment);
+
             await projectRepository.addProject(project);
             user.projects.push(project);
             await userRepository.updateUser(user.username, user);
