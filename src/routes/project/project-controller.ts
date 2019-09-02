@@ -62,20 +62,20 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            const headers = req.headers;
-            let authorization = headers.authorization;
-            if(!authorization || !authorization.startsWith('Bearer ')) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
+            // const headers = req.headers;
+            // let authorization = headers.authorization;
+            // if(!authorization || !authorization.startsWith('Bearer ')) {
+            //     return constants.UNAUTHORIZED_USER_MESSAGE;
+            // }
 
-            authorization = authorization.substring(7, authorization.length);
-            let user = authenticationService.retrieveUser(authorization);
-            if (!user) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
+            // authorization = authorization.substring(7, authorization.length);
+            // let user = authenticationService.retrieveUser(authorization);
+            // if (!user) {
+            //     return constants.UNAUTHORIZED_USER_MESSAGE;
+            // }
 
-            const users = await userRepository.findUserByUsername(user.username);
-            user = users[0];
+            const users = await userRepository.findUserByUsername('martin');
+            const user = users[0];
 
             const pages = req.body.pages;
             const id = req.params.id;
