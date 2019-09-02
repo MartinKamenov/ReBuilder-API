@@ -33,10 +33,7 @@ const controller = {
             users[0].projects
         );
         const token = jwt.sign({ user },
-            secret,
-            {
-                expiresIn: '14d'
-            }
+            secret, {}
         );
 
         return {
@@ -68,10 +65,7 @@ const controller = {
         await userRepository.addUser(user);
 
         const token = jwt.sign({ user },
-            secret,
-            {
-                expiresIn: '14d'
-            }
+            secret, {}
         );
 
         return {
