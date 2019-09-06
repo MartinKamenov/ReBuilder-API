@@ -9,10 +9,6 @@ import UserRepository from './models/repositories/UserRepository';
 
 const express = require('express');
 const cors = require('cors');
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
 
 const bodyParser = require('body-parser');
 
@@ -27,7 +23,7 @@ const start = (setupConfiguration: SetupConfiguration) => {
         new ProjectRoute(app, projectRepository, userRepository),
     ];
 
-    app.use(cors(corsOptions));
+    app.use(cors());
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(bodyParser.json());
