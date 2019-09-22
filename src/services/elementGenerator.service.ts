@@ -12,7 +12,7 @@ const getElement = (component) => {
     if(copyOfStyle.width.endsWith('px')) {
         const pixelsWidth = parseInt(copyOfStyle.width, 10);
         delete copyOfStyle.width;
-        copyOfStyle.width = parseFloat((pixelsWidth / screenWidth) * 100) + '%';
+        copyOfStyle.width = ((pixelsWidth / screenWidth) * 100) + '%';
     }
     switch(component.name) {
     case componentTypes.Header:
