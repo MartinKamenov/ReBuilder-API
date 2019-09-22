@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { componentTypes } from '';
+import { componentTypes } from './componentTypes';
 const screenWidth = 1200;
 
 const getElement = (component) => {
@@ -43,7 +43,7 @@ const getElement = (component) => {
     case componentTypes.NavigationBar:
         return (
             `<div className='element-center' style={${JSON.stringify(copyOfStyle)}}>
-${component.children.map(c => getElement(c)).join('\n')}
+${component.children.map((c) => getElement(c)).join('\n')}
 </div>`
         );
     default:
