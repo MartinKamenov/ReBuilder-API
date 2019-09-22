@@ -5,8 +5,8 @@ const getDirName = require('path').dirname;
 const fse = require('fs-extra');
 
 const projectSavingDeploymentService = {
-    saveDeploymentProject: async (id, name, droppedComponents) => {
-        const templates = templatingService.getAllTemplates(name, droppedComponents);
+    saveDeploymentProject: async (name, pages, imageUrl, id) => {
+        const templates = templatingService.getAllTemplates(name, pages, imageUrl);
         templates.forEach(async (templateObject) => {
             const filePath = 'deployments/' + id + '/' + templateObject.filePath;
             // tslint:disable-next-line:no-console
