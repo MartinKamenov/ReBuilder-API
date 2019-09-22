@@ -39,6 +39,9 @@ class ProjectRoute implements Route {
                 );
                 res.status(constants.SUCCESS_STATUS_CODE).send(project);
             })
+            .post('/:id/database', async (req: AuthenticatedRequest, res: ResponseInteface) => {
+                res.send('Tables');
+            })
             .post('/:id/deploy', async (req: AuthenticatedRequest, res: ResponseInteface) => {
                 const result = await controller.deployProject(
                     this.projectRepository,
