@@ -50,9 +50,7 @@ const controller = {
                     user.username,
                     user.id,
                     projectImageUrl,
-                    [],
-                    Status.inDevelopment,
-                    '');
+                    []);
 
             await projectRepository.addProject(project);
             user.projects.push(project);
