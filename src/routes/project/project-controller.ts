@@ -6,6 +6,7 @@ import constants from '../../constants/constants';
 import ProjectModel from '../../models/ProjectModel';
 import authenticationService from '../../services/authentication.service';
 import deploymentService from '../../services/deployment.service';
+import DeploymentRepository from '../../models/repositories/DeploymentRepository';
 
 const uuid = require('uuid');
 const connections = {};
@@ -71,26 +72,27 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            // const headers = req.headers;
-            // let authorization = headers.authorization;
-            // if(!authorization || !authorization.startsWith('Bearer ')) {
-            //     return constants.UNAUTHORIZED_USER_MESSAGE;
-            // }
+            const headers = req.headers;
+            let authorization = headers.authorization;
+            if(!authorization || !authorization.startsWith('Bearer ')) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
 
-            // authorization = authorization.substring(7, authorization.length);
-            // let user = authenticationService.retrieveUser(authorization);
-            // if (!user) {
-            //     return constants.UNAUTHORIZED_USER_MESSAGE;
-            // }
+            authorization = authorization.substring(7, authorization.length);
+            let user = authenticationService.retrieveUser(authorization);
+            if (!user) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
 
             const users = await userRepository.findUserByUsername('martin');
-            const user = users[0];
+            user = users[0];
 
             const pages = req.body.pages;
             const id = req.params.id;
 
+            let projects;
             if(!pages) {
-                const projects = await projectRepository.findProjectById(id);
+                projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;
                 }
@@ -98,7 +100,7 @@ const controller = {
                 return projects[0];
             }
 
-            const projects = await projectRepository.findProjectById(id);
+            projects = await projectRepository.findProjectById(id);
             const project = projects[0];
             console.log(user.projects);
             console.log(project);
@@ -117,7 +119,7 @@ const controller = {
 
         deployProject: async (
             projectRepository: ProjectRepository,
-            userRepository: UserRepository,
+            deploymentRepository: DeploymentRepository,
             req: AuthenticatedRequest) => {
                 const headers = req.headers;
                 let authorization = headers.authorization;
@@ -138,7 +140,7 @@ const controller = {
                 }
 
                 const project = foundProjects[0];
-                const url = await deploymentService.deployProject(project);
+                const url = await deploymentService.deployProject(project, deploymentRepository);
                 return {
                     message: constants.SUCCESSFULL_DEPLOYMENT,
                     projectUrl: url
