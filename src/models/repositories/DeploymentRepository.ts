@@ -7,8 +7,8 @@ export default class DeploymentRepository {
         return this.database.showAll(this.collectionName);
     }
 
-    addProject(user: Deployment): Promise<Deployment[]> {
-        return this.database.insert(this.collectionName, user);
+    addProject(deployment: Deployment): Promise<Deployment[]> {
+        return this.database.insert(this.collectionName, deployment);
     }
 
     findDeploymentById(id: string): Promise<Deployment[]> {

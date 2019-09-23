@@ -8,8 +8,19 @@ import authenticationService from '../../services/authentication.service';
 import deploymentService from '../../services/deployment.service';
 
 const uuid = require('uuid');
+const connections = {};
 
 const controller = {
+    addConnection: (id, connection) => {
+        connections[id] = connection;
+    },
+    removeConnection: (id) => {
+        delete connections[id];
+    },
+    sendMessage: (id, message) => {
+        const connection = connections[id];
+        connection.send(JSON.stringify(message));
+    },
     getAllProjects: async (projectRepository: ProjectRepository) => {
         const projects = await projectRepository.getAllProjects();
         return projects;
