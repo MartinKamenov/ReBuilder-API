@@ -2,18 +2,18 @@ import Route from '../contracts/Route';
 import controller from './project-controller';
 import constants from '../../constants/constants';
 import ProjectRepository from '../../models/repositories/ProjectRepository';
-import { Application } from 'express';
 import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInteface from '../../models/server/ResponseInterface';
 import UserRepository from '../../models/repositories/UserRepository';
 import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
+import ExpressApplication from '../../models/Application';
 const enableWs = require('express-ws');
 
 const { Router } = require('express');
 
 class ProjectRoute implements Route {
     constructor(
-        private app: Application,
+        private app: ExpressApplication,
         private projectRepository: ProjectRepository,
         private userRepository: UserRepository) {}
     public attach = () => {

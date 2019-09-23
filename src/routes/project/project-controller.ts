@@ -5,7 +5,6 @@ import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
 import constants from '../../constants/constants';
 import ProjectModel from '../../models/ProjectModel';
 import authenticationService from '../../services/authentication.service';
-import { Status } from '../../models/contracts/Project';
 import deploymentService from '../../services/deployment.service';
 
 const uuid = require('uuid');
