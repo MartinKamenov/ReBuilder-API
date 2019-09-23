@@ -28,11 +28,11 @@ class ProjectRoute implements Route {
 
             controller.addConnection(id, ws);
             ws.on('message', async (msg) => {
-                // TO DO: Implement on message method
+                controller.sendMessage(id, msg);
             });
 
             ws.on('close', () => {
-                // TO DO: Implement close method
+                controller.removeConnection(id);
             });
         });
 
