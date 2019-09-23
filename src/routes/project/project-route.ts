@@ -7,6 +7,7 @@ import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInteface from '../../models/server/ResponseInterface';
 import UserRepository from '../../models/repositories/UserRepository';
 import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
+const enableWs = require('express-ws');
 
 const { Router } = require('express');
 
@@ -17,6 +18,20 @@ class ProjectRoute implements Route {
         private userRepository: UserRepository) {}
     public attach = () => {
         const router = new Router();
+
+        enableWs(this.app);
+
+        this.app.ws('/:id/deployment', async (ws, req) => {
+            const id = req.params.id;
+            // controller.addConnection(id, ws);
+            ws.on('message', async (msg) => {
+                // TO DO: Implement on message method
+            });
+
+            ws.on('close', () => {
+                // TO DO: Implement close method
+            });
+        });
 
         router
             .get('/', async (req: RequestInterface, res: ResponseInteface) => {
