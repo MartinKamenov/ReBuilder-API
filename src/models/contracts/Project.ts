@@ -14,4 +14,5 @@ export default interface Project {
     projectImageUrl: string;
     pages: Page[];
     status: Status;
+    uploadUrl: string;
 }

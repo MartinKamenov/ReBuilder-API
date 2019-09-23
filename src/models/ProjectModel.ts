@@ -9,6 +9,7 @@ export default class ProjectModel implements Project {
         public userId: string,
         public projectImageUrl: string,
         public pages: Page[],
-        public status: Status
+        public status: Status,
+        public uploadUrl: string,
     ) {}
 }

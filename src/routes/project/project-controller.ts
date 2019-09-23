@@ -51,7 +51,8 @@ const controller = {
                     user.id,
                     projectImageUrl,
                     [],
-                    Status.inDevelopment);
+                    Status.inDevelopment,
+                    '');
 
             await projectRepository.addProject(project);
             user.projects.push(project);
