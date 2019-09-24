@@ -1,6 +1,8 @@
+import { Status } from './../models/contracts/Deployment';
 import projectSavingDeploymentService from './projectSavingDeployment.service';
 import Project from '../models/contracts/Project';
 import DeploymentRepository from '../models/repositories/DeploymentRepository';
+import DeploymentModel from '../models/DeploymentModel';
 const uuid = require('uuid');
 const exec = require('child-process-promise').exec;
 
@@ -10,10 +12,16 @@ const deploymentService = {
         .saveDeploymentProject(project.name, project.pages, project.projectImageUrl,
             project.id);
         const deployments = await deploymentRepository.findDeploymentById(project.id);
+
+        let deployment;
+        let isDeployed = false;
         if(deployments.length !== 1) {
-            return;
+            deployment = new DeploymentModel(project.id, project.name, project.username,
+                project.userId, Status.inactive, [], '');
+        } else {
+            isDeployed = true;
+            deployment = deployments[0];
         }
-        const deployment = deployments[0];
 
         const path = './deployments/' + project.id;
         try {
@@ -45,6 +53,12 @@ const deploymentService = {
             const url = `https://${name}.herokuapp.com`;
 
             deployment.deployUrl = url;
+
+            if(isDeployed) {
+                await deploymentRepository.updateDeployment(project.id, deployment);
+            } else {
+                await deploymentRepository.addDeployment(deployment);
+            }
 
             return url;
         } catch(error) {
