@@ -23,7 +23,7 @@ class ProjectRoute implements Route {
 
         enableWs(this.app);
 
-        this.app.ws('/:id/deployment', async (ws, req) => {
+        this.app.ws('/:id/deployment/status', async (ws, req) => {
             const id = req.params.id;
 
             controller.addConnection(id, ws);

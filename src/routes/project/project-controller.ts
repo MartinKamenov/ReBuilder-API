@@ -102,13 +102,10 @@ const controller = {
 
             projects = await projectRepository.findProjectById(id);
             const project = projects[0];
-            console.log(user.projects);
-            console.log(project);
             const index = user.projects.findIndex((p) => (p.id === id));
 
             project.pages = pages;
             user.projects[index] = project;
-            console.log('user.projects', user.projects);
 
             await userRepository.updateUser(user.username, user);
 
