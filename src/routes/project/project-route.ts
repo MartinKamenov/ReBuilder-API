@@ -57,10 +57,17 @@ class ProjectRoute implements Route {
                 );
                 res.status(constants.SUCCESS_STATUS_CODE).send(project);
             })
+            .get('/:id/deploy', async (req: AuthenticatedRequest, res: ResponseInteface) => {
+                const result = await controller.getDeploymentInformation(
+                    this.deploymentRepository,
+                    req
+                );
+                res.status(constants.SUCCESS_STATUS_CODE).send(result);
+            })
             .post('/:id/deploy', async (req: AuthenticatedRequest, res: ResponseInteface) => {
                 const result = await controller.deployProject(
                     this.projectRepository,
-                    this.userRepository,
+                    this.deploymentRepository,
                     req
                 );
                 res.status(constants.SUCCESS_STATUS_CODE).send(result);

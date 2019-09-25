@@ -117,6 +117,22 @@ const controller = {
             return project;
         },
 
+        getDeploymentInformation: async (
+            deploymentRepository: DeploymentRepository,
+            req: AuthenticatedRequest
+        ) => {
+            const id = req.params.id;
+
+            const deployments = await deploymentRepository
+                .findDeploymentById(id);
+
+            if(deployments.length !== 1) {
+                return 'Deployment not found';
+            }
+
+            return deployments[0];
+        },
+
         deployProject: async (
             projectRepository: ProjectRepository,
             deploymentRepository: DeploymentRepository,
