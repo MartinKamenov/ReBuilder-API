@@ -4,14 +4,12 @@ const screenWidth = 1200;
 
 const getElement = (component) => {
     const copyOfStyle = Object.assign({}, component.style);
-    console.log('component.style', component.style);
     Object.keys(copyOfStyle).forEach((key) => {
         if(Array.isArray(copyOfStyle[key])) {
             delete copyOfStyle[key];
         }
     });
 
-    console.log('copyOfStyle', copyOfStyle);
     if(copyOfStyle.width.endsWith('px')) {
         const pixelsWidth = parseInt(copyOfStyle.width, 10);
         delete copyOfStyle.width;

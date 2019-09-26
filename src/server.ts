@@ -6,6 +6,7 @@ import ProjectRoute from './routes/project/project-route';
 import database from './database/connector';
 import ProjectRepository from './models/repositories/ProjectRepository';
 import UserRepository from './models/repositories/UserRepository';
+import DeploymentRepository from './models/repositories/DeploymentRepository';
 
 const express = require('express');
 const cors = require('cors');
@@ -17,10 +18,11 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     const projectRepository = new ProjectRepository(database, 'projects');
     const userRepository = new UserRepository(database, 'users');
+    const deploymentRepository = new DeploymentRepository(database, 'deployments');
 
     const routes: Route[] = [
         new AuthRoute(app, userRepository),
-        new ProjectRoute(app, projectRepository, userRepository),
+        new ProjectRoute(app, projectRepository, userRepository, deploymentRepository),
     ];
 
     app.use(cors());

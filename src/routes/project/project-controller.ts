@@ -5,12 +5,23 @@ import AuthenticatedRequest from '../auth/contracts/AuthentedRequest';
 import constants from '../../constants/constants';
 import ProjectModel from '../../models/ProjectModel';
 import authenticationService from '../../services/authentication.service';
-import { Status } from '../../models/contracts/Project';
 import deploymentService from '../../services/deployment.service';
+import DeploymentRepository from '../../models/repositories/DeploymentRepository';
 
 const uuid = require('uuid');
+const connections = {};
 
 const controller = {
+    addConnection: (id, connection) => {
+        connections[id] = connection;
+    },
+    removeConnection: (id) => {
+        delete connections[id];
+    },
+    sendMessage: (id, message) => {
+        const connection = connections[id];
+        connection.send(JSON.stringify(message));
+    },
     getAllProjects: async (projectRepository: ProjectRepository) => {
         const projects = await projectRepository.getAllProjects();
         return projects;
@@ -50,8 +61,7 @@ const controller = {
                     user.username,
                     user.id,
                     projectImageUrl,
-                    [],
-                    Status.inDevelopment);
+                    []);
 
             await projectRepository.addProject(project);
             user.projects.push(project);
@@ -62,26 +72,27 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            // const headers = req.headers;
-            // let authorization = headers.authorization;
-            // if(!authorization || !authorization.startsWith('Bearer ')) {
-            //     return constants.UNAUTHORIZED_USER_MESSAGE;
-            // }
+            const headers = req.headers;
+            let authorization = headers.authorization;
+            if(!authorization || !authorization.startsWith('Bearer ')) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
 
-            // authorization = authorization.substring(7, authorization.length);
-            // let user = authenticationService.retrieveUser(authorization);
-            // if (!user) {
-            //     return constants.UNAUTHORIZED_USER_MESSAGE;
-            // }
+            authorization = authorization.substring(7, authorization.length);
+            let user = authenticationService.retrieveUser(authorization);
+            if (!user) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
 
             const users = await userRepository.findUserByUsername('martin');
-            const user = users[0];
+            user = users[0];
 
             const pages = req.body.pages;
             const id = req.params.id;
 
+            let projects;
             if(!pages) {
-                const projects = await projectRepository.findProjectById(id);
+                projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;
                 }
@@ -89,15 +100,12 @@ const controller = {
                 return projects[0];
             }
 
-            const projects = await projectRepository.findProjectById(id);
+            projects = await projectRepository.findProjectById(id);
             const project = projects[0];
-            console.log(user.projects);
-            console.log(project);
             const index = user.projects.findIndex((p) => (p.id === id));
 
             project.pages = pages;
             user.projects[index] = project;
-            console.log('user.projects', user.projects);
 
             await userRepository.updateUser(user.username, user);
 
@@ -106,9 +114,25 @@ const controller = {
             return project;
         },
 
+        getDeploymentInformation: async (
+            deploymentRepository: DeploymentRepository,
+            req: AuthenticatedRequest
+        ) => {
+            const id = req.params.id;
+
+            const deployments = await deploymentRepository
+                .findDeploymentById(id);
+
+            if(deployments.length !== 1) {
+                return 'Deployment not found';
+            }
+
+            return deployments[0];
+        },
+
         deployProject: async (
             projectRepository: ProjectRepository,
-            userRepository: UserRepository,
+            deploymentRepository: DeploymentRepository,
             req: AuthenticatedRequest) => {
                 const headers = req.headers;
                 let authorization = headers.authorization;
@@ -129,7 +153,7 @@ const controller = {
                 }
 
                 const project = foundProjects[0];
-                const url = await deploymentService.deployProject(project);
+                const url = await deploymentService.deployProject(project, deploymentRepository);
                 return {
                     message: constants.SUCCESSFULL_DEPLOYMENT,
                     projectUrl: url

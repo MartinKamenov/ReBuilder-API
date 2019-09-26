@@ -1,16 +1,13 @@
 import Route from '../contracts/Route';
 import controller from './auth-controller';
-import constants from '../../constants/constants';
-import { Application } from 'express';
-import RequestInterface from '../../models/server/RequestInterface';
 import ResponseInterface from '../../models/server/ResponseInterface';
-import LogoutRequest from './contracts/LogoutRequest';
 import UserRepository from '../../models/repositories/UserRepository';
+import ExpressApplication from '../../models/Application';
 
 const { Router } = require('express');
 
 class AuthRoute implements Route {
-    constructor(private app: Application, private userRepository: UserRepository) {}
+    constructor(private app: ExpressApplication, private userRepository: UserRepository) {}
     public attach = () => {
         const router = new Router();
 
