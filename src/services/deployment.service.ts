@@ -7,7 +7,11 @@ const uuid = require('uuid');
 const exec = require('child-process-promise').exec;
 
 const deploymentService = {
-    deployProject: async (project: Project, deploymentRepository: DeploymentRepository): Promise<string> => {
+    deployProject: async (
+        projectController: any,
+        project: Project,
+        deploymentRepository: DeploymentRepository
+    ): Promise<string> => {
         await projectSavingDeploymentService
         .saveDeploymentProject(project.name, project.pages, project.projectImageUrl,
             project.id);
@@ -18,9 +22,11 @@ const deploymentService = {
         if(deployments.length !== 1) {
             deployment = new DeploymentModel(project.id, project.name, project.username,
                 project.userId, Status.inactive, [], '');
+            projectController.sendMessage(project.id, 'Deployment is created');
         } else {
             isDeployed = true;
             deployment = deployments[0];
+            projectController.sendMessage(project.id, 'New deployment is started');
         }
 
         const path = './deployments/' + project.id;
@@ -43,6 +49,8 @@ const deploymentService = {
                     id: uuid.v1(),
                     data: Date.now()
                 });
+
+                projectController.sendMessage(project.id, 'executed ' + command);
                 try {
                     await exec(command);
                 } catch(er) {
