@@ -20,6 +20,9 @@ const controller = {
     },
     sendMessage: (id, message) => {
         const connection = connections[id];
+        if(!connection) {
+            return;
+        }
         connection.send(JSON.stringify(message));
     },
     getAllProjects: async (projectRepository: ProjectRepository) => {
@@ -124,7 +127,7 @@ const controller = {
                 .findDeploymentById(id);
 
             if(deployments.length !== 1) {
-                return 'Deployment not found';
+                return 'This project has\'t beem deployed yet';
             }
 
             return deployments[0];
@@ -153,7 +156,7 @@ const controller = {
                 }
 
                 const project = foundProjects[0];
-                const url = await deploymentService.deployProject(project, deploymentRepository);
+                const url = await deploymentService.deployProject(controller, project, deploymentRepository);
                 return {
                     message: constants.SUCCESSFULL_DEPLOYMENT,
                     projectUrl: url
