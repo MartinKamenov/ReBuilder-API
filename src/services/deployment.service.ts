@@ -43,6 +43,7 @@ const deploymentService = {
             // tslint:disable-next-line:prefer-for-of
             for(let i = 0; i < commands.length; i++) {
                 const command = `cd ${path} && ${commands[i].command}`;
+                // tslint:disable-next-line:no-console
                 console.log('executed ' + command);
                 deployment.log.push({
                     message: 'Executed ' + command,
@@ -54,6 +55,7 @@ const deploymentService = {
                 try {
                     await exec(command);
                 } catch(er) {
+                    // tslint:disable-next-line:no-console
                     console.log(er);
                 }
             }

@@ -156,7 +156,7 @@ const controller = {
                 }
 
                 const project = foundProjects[0];
-                const url = await deploymentService.deployProject(this, project, deploymentRepository);
+                const url = await deploymentService.deployProject(controller, project, deploymentRepository);
                 return {
                     message: constants.SUCCESSFULL_DEPLOYMENT,
                     projectUrl: url
