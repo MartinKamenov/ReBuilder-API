@@ -3,6 +3,8 @@ import projectSavingDeploymentService from './projectSavingDeployment.service';
 import Project from '../models/contracts/Project';
 import DeploymentRepository from '../models/repositories/DeploymentRepository';
 import DeploymentModel from '../models/DeploymentModel';
+import deploymentMessages from '../models/DeploymentMessages';
+
 const uuid = require('uuid');
 const exec = require('child-process-promise').exec;
 
@@ -42,6 +44,7 @@ const deploymentService = {
 
             // tslint:disable-next-line:prefer-for-of
             for(let i = 0; i < commands.length; i++) {
+                const commandWords = commands[i].command.split(' ');
                 const command = `cd ${path} && ${commands[i].command}`;
                 // tslint:disable-next-line:no-console
                 console.log('executed ' + command);
@@ -51,7 +54,9 @@ const deploymentService = {
                     data: Date.now()
                 });
 
-                projectController.sendMessage(project.id, 'executed ' + command);
+                const commandProperty = `${commandWords[0].toUpperCase()}_${commandWords[1].toUpperCase()}`;
+
+                projectController.sendMessage(project.id, deploymentMessages[commandProperty]);
                 try {
                     await exec(command);
                 } catch(er) {
