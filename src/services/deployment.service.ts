@@ -24,11 +24,11 @@ const deploymentService = {
         if(deployments.length !== 1) {
             deployment = new DeploymentModel(project.id, project.name, project.username,
                 project.userId, Status.inactive, [], '');
-            projectController.sendMessage(project.id, 'Deployment is created');
+            projectController.sendMessage(project.id, deploymentMessages.NEW_DEPLOYMENT);
         } else {
             isDeployed = true;
             deployment = deployments[0];
-            projectController.sendMessage(project.id, 'New deployment is started');
+            projectController.sendMessage(project.id, deploymentMessages.NEW_DEPLOYMENT);
         }
 
         const path = './deployments/' + project.id;
@@ -74,6 +74,8 @@ const deploymentService = {
             } else {
                 await deploymentRepository.addDeployment(deployment);
             }
+
+            projectController.sendMessage(project.id, deploymentMessages.PROJECT_READY);
 
             return url;
         } catch(error) {
