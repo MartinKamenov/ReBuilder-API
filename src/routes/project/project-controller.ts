@@ -7,6 +7,7 @@ import ProjectModel from '../../models/ProjectModel';
 import authenticationService from '../../services/authentication.service';
 import deploymentService from '../../services/deployment.service';
 import DeploymentRepository from '../../models/repositories/DeploymentRepository';
+import Page from '../../models/contracts/Page';
 
 const uuid = require('uuid');
 const connections = {};
@@ -57,6 +58,13 @@ const controller = {
 
             const projectPassedInBody = req.body.project;
 
+            const defaultPage: Page = {
+                id: uuid.v1(),
+                name: 'Home',
+                route: '/',
+                elements: []
+            };
+
             const project = projectPassedInBody ? projectPassedInBody :
                 new ProjectModel(
                     uuid.v1(),
@@ -64,7 +72,7 @@ const controller = {
                     user.username,
                     user.id,
                     projectImageUrl,
-                    []);
+                    [defaultPage]);
 
             await projectRepository.addProject(project);
             user.projects.push(project);
