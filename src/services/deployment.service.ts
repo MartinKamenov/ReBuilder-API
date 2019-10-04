@@ -76,6 +76,8 @@ const deploymentService = {
             }
 
             projectController.sendMessage(project.id, deploymentMessages.PROJECT_READY);
+            deploymentMessages.OPEN_SITE.url = url;
+            projectController.sendMessage(project.id, deploymentMessages.OPEN_SITE);
 
             return url;
         } catch(error) {
