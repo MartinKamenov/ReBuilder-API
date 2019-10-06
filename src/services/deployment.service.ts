@@ -35,12 +35,20 @@ const deploymentService = {
         try {
             const name = project.name.toLowerCase().trim().replace(/\s/g, '-');
             const herokuGitUrl = 'https://git.heroku.com/' + name + '.git';
-            const commands = [
+            let commands = [];
+            if(!isDeployed) {
+            commands = [
                 { command: `git init`, shouldExecute: true },
                 { command: `heroku create ${name}`, shouldExecute: true },
                 { command: `git remote add origin ${herokuGitUrl}`, shouldExecute: true },
                 { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
                 { command: `git push -u origin master`, shouldExecute: true }];
+            } else {
+                commands = [
+                    { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
+                    { command: `git push -u origin master`, shouldExecute: true }
+                ];
+            }
 
             // tslint:disable-next-line:prefer-for-of
             for(let i = 0; i < commands.length; i++) {
@@ -68,6 +76,7 @@ const deploymentService = {
             const url = `https://${name}.herokuapp.com`;
 
             deployment.deployUrl = url;
+            deployment.status = Status.deployed;
 
             if(isDeployed) {
                 await deploymentRepository.updateDeployment(project.id, deployment);
