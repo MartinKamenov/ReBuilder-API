@@ -8,6 +8,13 @@ import ProjectRepository from './models/repositories/ProjectRepository';
 import UserRepository from './models/repositories/UserRepository';
 import DeploymentRepository from './models/repositories/DeploymentRepository';
 
+const fs = require('fs');
+const https = require('https');
+const privateKey  = fs.readFileSync('./key.pem', 'utf8');
+const certificate = fs.readFileSync('./cert.pem', 'utf8');
+
+const credentials = {key: privateKey, cert: certificate, passphrase : 'pesho'};
+
 const express = require('express');
 const cors = require('cors');
 
@@ -22,7 +29,6 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     const routes: Route[] = [
         new AuthRoute(app, userRepository),
-        new ProjectRoute(app, projectRepository, userRepository, deploymentRepository),
     ];
 
     app.use(cors());
@@ -34,7 +40,12 @@ const start = (setupConfiguration: SetupConfiguration) => {
         route.attach();
     });
 
-    app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
+    // app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(setupConfiguration.port);
+
+    const projectRoute = new ProjectRoute(app, projectRepository, userRepository, deploymentRepository, httpsServer);
+    projectRoute.attach();
 };
 
 module.exports = start;

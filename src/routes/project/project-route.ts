@@ -17,11 +17,12 @@ class ProjectRoute implements Route {
         private app: ExpressApplication,
         private projectRepository: ProjectRepository,
         private userRepository: UserRepository,
-        private deploymentRepository: DeploymentRepository) {}
+        private deploymentRepository: DeploymentRepository,
+        private httpsService: any) {}
     public attach = () => {
         const router = new Router();
 
-        enableWs(this.app);
+        enableWs(this.app, this.httpsService);
 
         this.app.ws('/:id/deployment/status', async (ws, req) => {
             const id = req.params.id;
