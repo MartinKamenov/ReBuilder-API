@@ -37,12 +37,12 @@ const deploymentService = {
             const herokuGitUrl = 'https://git.heroku.com/' + name + '.git';
             let commands = [];
             if(!isDeployed) {
-            commands = [
-                { command: `git init`, shouldExecute: true },
-                { command: `heroku create ${name}`, shouldExecute: true },
-                { command: `git remote add origin ${herokuGitUrl}`, shouldExecute: true },
-                { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
-                { command: `git push -u origin master`, shouldExecute: true }];
+                commands = [
+                    { command: `git init`, shouldExecute: true },
+                    { command: `heroku create ${name}`, shouldExecute: true },
+                    { command: `git remote add origin ${herokuGitUrl}`, shouldExecute: true },
+                    { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
+                    { command: `git push -u origin master`, shouldExecute: true }];
             } else {
                 commands = [
                     { command: `git add . && git commit -m "Auto generated commit"`, shouldExecute: true },
