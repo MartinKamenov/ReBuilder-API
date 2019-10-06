@@ -29,7 +29,6 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     const routes: Route[] = [
         new AuthRoute(app, userRepository),
-        new ProjectRoute(app, projectRepository, userRepository, deploymentRepository),
     ];
 
     app.use(cors());
@@ -44,6 +43,9 @@ const start = (setupConfiguration: SetupConfiguration) => {
     // app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
     const httpsServer = https.createServer(credentials, app);
     httpsServer.listen(setupConfiguration.port);
+
+    const projectRoute = new ProjectRoute(app, projectRepository, userRepository, deploymentRepository, httpsServer);
+    projectRoute.attach();
 };
 
 module.exports = start;
