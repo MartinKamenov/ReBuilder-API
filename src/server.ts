@@ -10,7 +10,7 @@ import DeploymentRepository from './models/repositories/DeploymentRepository';
 
 const fs = require('fs');
 const https = require('https');
-const privateKey  = fs.readFileSync('./key.pem', 'utf8');
+const privateKey  = fs.readFileSync('./cert.key', 'utf8');
 const certificate = fs.readFileSync('./cert.pem', 'utf8');
 
 const credentials = {key: privateKey, cert: certificate, passphrase : 'pesho'};
@@ -23,6 +23,11 @@ const bodyParser = require('body-parser');
 const start = (setupConfiguration: SetupConfiguration) => {
     const app = express();
 
+    app.use(cors());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use(bodyParser.json());
+
     const projectRepository = new ProjectRepository(database, 'projects');
     const userRepository = new UserRepository(database, 'users');
     const deploymentRepository = new DeploymentRepository(database, 'deployments');
@@ -30,11 +35,6 @@ const start = (setupConfiguration: SetupConfiguration) => {
     const routes: Route[] = [
         new AuthRoute(app, userRepository),
     ];
-
-    app.use(cors());
-    app.use(bodyParser.urlencoded({ extended: true }));
-
-    app.use(bodyParser.json());
 
     routes.forEach((route) => {
         route.attach();
