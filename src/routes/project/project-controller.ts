@@ -24,6 +24,8 @@ const controller = {
         if(!connection) {
             return;
         }
+
+        console.log(message);
         connection.send(JSON.stringify(message));
     },
     getAllProjects: async (projectRepository: ProjectRepository) => {

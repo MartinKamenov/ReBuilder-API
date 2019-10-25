@@ -42,7 +42,10 @@ const start = (setupConfiguration: SetupConfiguration) => {
 
     // app.listen(setupConfiguration.port, setupConfiguration.listenCallback);
     const httpsServer = https.createServer(credentials, app);
-    httpsServer.listen(setupConfiguration.port);
+    httpsServer.listen(
+        setupConfiguration.port,
+        setupConfiguration.host,
+        setupConfiguration.listenCallback);
 
     const projectRoute = new ProjectRoute(app, projectRepository, userRepository, deploymentRepository, httpsServer);
     projectRoute.attach();
