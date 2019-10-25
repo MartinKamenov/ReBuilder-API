@@ -1,3 +1,3 @@
 export default class SetupConfiguration {
-    constructor(public port: string, public listenCallback: Function) {}
+    constructor(public port: string, public host: string, public listenCallback: () => void) {}
 }
