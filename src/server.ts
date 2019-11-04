@@ -8,8 +8,6 @@ import ProjectRepository from './models/repositories/ProjectRepository';
 import UserRepository from './models/repositories/UserRepository';
 import DeploymentRepository from './models/repositories/DeploymentRepository';
 
-const fs = require('fs');
-
 const express = require('express');
 const cors = require('cors');
 
