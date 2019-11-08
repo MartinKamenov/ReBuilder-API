@@ -71,6 +71,10 @@ class ProjectRoute implements Route {
                     req
                 );
                 res.status(constants.SUCCESS_STATUS_CODE).send(result);
+            })
+            .post('/:id/templates', async (req: AuthenticatedRequest, res: ResponseInteface) => {
+                const result = await controller.getDeploymentTemplates(this.projectRepository, req);
+                res.status(constants.SUCCESS_STATUS_CODE).send(result);
             });
 
         this.app.use('/projects', router);

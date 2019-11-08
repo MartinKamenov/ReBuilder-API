@@ -8,6 +8,7 @@ import authenticationService from '../../services/authentication.service';
 import deploymentService from '../../services/deployment.service';
 import DeploymentRepository from '../../models/repositories/DeploymentRepository';
 import Page from '../../models/contracts/Page';
+import templatingService from '../../services/templating.service';
 
 const uuid = require('uuid');
 const connections = {};
@@ -141,6 +142,22 @@ const controller = {
             }
 
             return deployments[0];
+        },
+
+        getDeploymentTemplates: async (
+            projectRepository: ProjectRepository,
+            req: AuthenticatedRequest) => {
+            const id: string = req.params.id;
+            const projects = await projectRepository.findProjectById(id);
+            if(projects.length < 1) {
+                return 'No projects found';
+            }
+
+            const project = projects[0];
+
+            const templates = templatingService.getAllTemplates(project.name, project.pages,
+                project.projectImageUrl);
+            return templates;
         },
 
         deployProject: async (
