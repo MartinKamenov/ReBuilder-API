@@ -47,7 +47,6 @@
     "fs-extra": "^8.1.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "ls": "^0.2.1",
     "mkdirp": "^0.5.1",
     "mongodb": "^2.2.30",
     "prompt": "^1.0.0",
