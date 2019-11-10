@@ -13,6 +13,17 @@ import templatingService from '../../services/templating.service';
 const uuid = require('uuid');
 const connections = {};
 
+const getAuthorizedUser = (req: AuthenticatedRequest) => {
+    let authorization = req.body.authorization;
+    if(!authorization || !authorization.startsWith('Bearer ')) {
+        return constants.UNAUTHORIZED_USER_MESSAGE;
+    }
+
+    authorization = authorization.substring(7, authorization.length);
+    const user = authenticationService.retrieveUser(authorization);
+    return user;
+};
+
 const controller = {
     addConnection: (id, connection) => {
         connections[id] = connection;
@@ -37,14 +48,7 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            const headers = req.headers;
-            let authorization = headers.authorization;
-            if(!authorization.startsWith('Bearer ')) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
-
-            authorization = authorization.substring(7, authorization.length);
-            let user = authenticationService.retrieveUser(authorization);
+            let user = getAuthorizedUser(req);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
@@ -86,13 +90,7 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            let authorization = req.body.authorization;
-            if(!authorization || !authorization.startsWith('Bearer ')) {
-                return constants.UNAUTHORIZED_USER_MESSAGE;
-            }
-
-            authorization = authorization.substring(7, authorization.length);
-            let user = authenticationService.retrieveUser(authorization);
+            let user = getAuthorizedUser(req);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
@@ -163,14 +161,7 @@ const controller = {
             projectRepository: ProjectRepository,
             deploymentRepository: DeploymentRepository,
             req: AuthenticatedRequest) => {
-                const headers = req.headers;
-                let authorization = headers.authorization;
-                if(!authorization || !authorization.startsWith('Bearer ')) {
-                    return constants.UNAUTHORIZED_USER_MESSAGE;
-                }
-
-                authorization = authorization.substring(7, authorization.length);
-                const user = authenticationService.retrieveUser(authorization);
+                const user = getAuthorizedUser(req);
                 if (!user) {
                     return constants.UNAUTHORIZED_USER_MESSAGE;
                 }
