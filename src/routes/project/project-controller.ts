@@ -86,44 +86,36 @@ const controller = {
         projectRepository: ProjectRepository,
         userRepository: UserRepository,
         req: AuthenticatedRequest) => {
-            const headers = req.headers;
-            let authorization = headers.authorization;
+            let authorization = req.body.authorization;
             if(!authorization || !authorization.startsWith('Bearer ')) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
             authorization = authorization.substring(7, authorization.length);
-            console.log('authorization: ', authorization);
             let user = authenticationService.retrieveUser(authorization);
             if (!user) {
                 return constants.UNAUTHORIZED_USER_MESSAGE;
             }
 
-            const users = await userRepository.findUserByUsername('martin');
+            const users = await userRepository.findUserByUsername(user.username);
             user = users[0];
-
-            console.log('user: ', user);
 
             const pages = req.body.pages;
             const id = req.params.id;
 
             let projects;
             if(!pages) {
-                console.log('here1');
                 projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
                     return `No project with ${id} was found`;
                 }
-                console.log('projects[0] ', projects[0]);
 
                 return projects[0];
             }
 
             projects = await projectRepository.findProjectById(id);
             const project = projects[0];
-            console.log('project: ', project);
             const index = user.projects.findIndex((p) => (p.id === id));
-            console.log('index: ', index);
 
             project.pages = pages;
             user.projects[index] = project;

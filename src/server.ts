@@ -16,6 +16,11 @@ const bodyParser = require('body-parser');
 const start = (setupConfiguration: SetupConfiguration) => {
     const app = express();
 
+    app.use(cors());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.use(bodyParser.json());
+
     const projectRepository = new ProjectRepository(database, 'projects');
     const userRepository = new UserRepository(database, 'users');
     const deploymentRepository = new DeploymentRepository(database, 'deployments');
@@ -24,11 +29,6 @@ const start = (setupConfiguration: SetupConfiguration) => {
         new AuthRoute(app, userRepository),
         new ProjectRoute(app, projectRepository, userRepository, deploymentRepository)
     ];
-
-    app.use(cors());
-    app.use(bodyParser.urlencoded({ extended: true }));
-
-    app.use(bodyParser.json());
 
     routes.forEach((route) => {
         route.attach();
