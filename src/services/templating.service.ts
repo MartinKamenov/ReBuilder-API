@@ -77,7 +77,7 @@ export default App;
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>${name}</title>
     </head>
-    <body>
+    <body style='margin: 0px;'>
     <div id="root"></div>
     </body>
 </html>`
@@ -130,9 +130,11 @@ import { Link } from 'react-router-dom';
 
 class ${page.name} extends Component {
     state = {  }
-    render() { 
+    render() {
         return (
-            <div>${elementGenerator.generateElements(page.elements)}</div>
+            <div style={${JSON.stringify(page.elements.find((e) => e.name === 'Body').style)}}>
+${elementGenerator.generateElements(page.elements)}
+            </div>
         );
     }
 }
