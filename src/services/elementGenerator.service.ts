@@ -60,8 +60,9 @@ ${component.children.map((c) => getElement(c)).join('\n')}
 
 const elementGenerator = {
     generateElements(elements) {
+        const filteredElements = elements.filter((e) => e.name !== 'Body');
         let result = '';
-        elements.forEach((component) => {
+        filteredElements.forEach((component) => {
             result += getElement(component);
         });
 
