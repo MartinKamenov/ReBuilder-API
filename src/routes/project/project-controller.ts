@@ -65,11 +65,31 @@ const controller = {
 
             const projectPassedInBody = req.body.project;
 
+            const defaultBody = {
+                name: 'Body',
+                title: 'Body',
+                index: 'body',
+                style: {
+                    color: '#000000',
+                    backgroundColor: '#ffffff',
+                    width: '100%',
+                    height: '100%',
+                    marginLeft: '0px',
+                    marginRight: '0px',
+                    marginTop: '0px',
+                    marginBottom: '0px',
+                    paddingLeft: '0px',
+                    paddingRight: '0px',
+                    paddingTop: '0px',
+                    paddingBottom: '0px'
+                }
+            };
+
             const defaultPage: Page = {
                 id: uuid.v1(),
                 name: 'Home',
                 route: '/',
-                elements: []
+                elements: [ defaultBody ]
             };
 
             const project = projectPassedInBody ? projectPassedInBody :
