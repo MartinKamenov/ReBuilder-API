@@ -7,6 +7,7 @@ export default interface Project {
     userId: string;
     projectImageUrl: string;
     pages: Page[];
+    description: string | null;
     creationDate: Date;
     lastUpdated: Date;
 }

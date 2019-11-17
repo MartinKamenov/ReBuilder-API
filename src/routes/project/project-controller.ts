@@ -60,6 +60,7 @@ const controller = {
             const body = req.body;
             const name = body.name;
             const projectImageUrl = body.projectImageUrl;
+            const description = body.description || null;
             if(!name || !projectImageUrl) {
                 return 'No name or no project image is passed';
             }
@@ -101,6 +102,7 @@ const controller = {
                     user.id,
                     projectImageUrl,
                     [defaultPage],
+                    description,
                     new Date(),
                     new Date());
 
