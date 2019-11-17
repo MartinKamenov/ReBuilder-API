@@ -8,6 +8,8 @@ export default class ProjectModel implements Project {
         public username: string,
         public userId: string,
         public projectImageUrl: string,
-        public pages: Page[]
+        public pages: Page[],
+        public creationDate: Date,
+        public lastUpdated: Date
     ) {}
 }

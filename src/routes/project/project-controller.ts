@@ -9,6 +9,7 @@ import deploymentService from '../../services/deployment.service';
 import DeploymentRepository from '../../models/repositories/DeploymentRepository';
 import Page from '../../models/contracts/Page';
 import templatingService from '../../services/templating.service';
+import Project from '../../models/contracts/Project';
 
 const uuid = require('uuid');
 const connections = {};
@@ -99,7 +100,9 @@ const controller = {
                     user.username,
                     user.id,
                     projectImageUrl,
-                    [defaultPage]);
+                    [defaultPage],
+                    new Date(),
+                    new Date());
 
             await projectRepository.addProject(project);
             user.projects.push(project);
@@ -121,7 +124,7 @@ const controller = {
             const pages = req.body.pages;
             const id = req.params.id;
 
-            let projects;
+            let projects: Project[] | null = null;
             if(!pages) {
                 projects = await projectRepository.findProjectById(id);
                 if(projects.length !== 1) {
@@ -136,6 +139,7 @@ const controller = {
             const index = user.projects.findIndex((p) => (p.id === id));
 
             project.pages = pages;
+            project.lastUpdated = new Date();
             user.projects[index] = project;
 
             await userRepository.updateUser(user.username, user);
