@@ -164,24 +164,26 @@ const controller = {
 
             const description = req.body.description || null;
             const name = req.body.name;
-            const imageUrl = req.body.imageUrl;
+            const projectImageUrl = req.body.projectImageUrl;
             const id = req.params.id;
 
             let projects: Project[] | null = null;
 
             projects = await projectRepository.findProjectById(id);
             const project = projects[0];
-            if(!name || ! imageUrl) {
+            if(!name || !projectImageUrl) {
                 return project;
             }
 
             const index = user.projects.findIndex((p) => (p.id === id));
 
             project.name = name;
-            project.projectImageUrl = imageUrl;
+            project.projectImageUrl = projectImageUrl;
             project.description = description;
             project.lastUpdated = new Date();
             user.projects[index] = project;
+
+            console.log('New project ', project);
 
             await userRepository.updateUser(user.username, user);
 
