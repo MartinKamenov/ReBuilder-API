@@ -150,6 +150,47 @@ const controller = {
 
             return project;
         },
+        updateProjectInformation: async (
+            projectRepository: ProjectRepository,
+            userRepository: UserRepository,
+            req: AuthenticatedRequest) => {
+            let user = getAuthorizedUser(req);
+            if (!user) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
+
+            const users = await userRepository.findUserByUsername(user.username);
+            user = users[0];
+
+            const description = req.body.description || null;
+            const name = req.body.name;
+            const projectImageUrl = req.body.projectImageUrl;
+            const id = req.params.id;
+
+            let projects: Project[] | null = null;
+
+            projects = await projectRepository.findProjectById(id);
+            const project = projects[0];
+            if(!name || !projectImageUrl) {
+                return project;
+            }
+
+            const index = user.projects.findIndex((p) => (p.id === id));
+
+            project.name = name;
+            project.projectImageUrl = projectImageUrl;
+            project.description = description;
+            project.lastUpdated = new Date();
+            user.projects[index] = project;
+
+            console.log('New project ', project);
+
+            await userRepository.updateUser(user.username, user);
+
+            await projectRepository.updateProject(project.id, project);
+
+            return project;
+        },
 
         getDeploymentInformation: async (
             deploymentRepository: DeploymentRepository,
