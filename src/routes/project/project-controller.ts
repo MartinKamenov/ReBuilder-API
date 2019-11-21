@@ -150,6 +150,28 @@ const controller = {
 
             return project;
         },
+        deleteProject: async (
+            projectRepository: ProjectRepository,
+            userRepository: UserRepository,
+            req: AuthenticatedRequest) => {
+            let user = getAuthorizedUser(req);
+            if (!user) {
+                return constants.UNAUTHORIZED_USER_MESSAGE;
+            }
+
+            const users = await userRepository.findUserByUsername(user.username);
+            user = users[0];
+            const id = req.params.id;
+            const projectIndex = user.projects.findIndex((p) => p.id === id);
+            if(projectIndex > -1) {
+                user.projects.splice(projectIndex, 1);
+            }
+
+            await userRepository.updateUser(user.username, user);
+            await projectRepository.deleteProject(id);
+
+            return 'Project was deleted';
+        },
         updateProjectInformation: async (
             projectRepository: ProjectRepository,
             userRepository: UserRepository,
