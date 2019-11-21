@@ -18,4 +18,8 @@ export default class ProjectRepository {
     updateProject(id: string, newProject: Project): Promise<Project[]> {
         return this.database.update(this.collectionName, { id }, newProject);
     }
+
+    deleteProject(id: string): Promise<Project[]> {
+        return this.database.delete(this.collectionName, { id });
+    }
 };
